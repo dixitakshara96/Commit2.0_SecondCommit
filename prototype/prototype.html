@@ -1,0 +1,2870 @@
+<!DOCTYPE html>
+<html lang="en">
+<script>
+  (function() {
+    const saved = localStorage.getItem("secondcommit-darkmode");
+    if (saved === "true") document.documentElement.setAttribute("data-theme", "dark");
+  })();
+</script>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Second Commit — Revive Ideas. Build Together.</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #FAFAFC;
+      color: #111827;
+      overflow-x: hidden;
+    }
+    :root {
+      --primary: #8B5CF6;
+      --primary-light: #C4B5FD;
+      --primary-hover: #7C3AED;
+      --bg: #FAFAFC;
+      --sidebar: #F4F1FF;
+      --border: #ECE8FF;
+      --success: #22C55E;
+      --warning: #F59E0B;
+      --danger: #EF4444;
+      --text: #111827;
+      --text-secondary: #6B7280;
+      --card-radius: 18px;
+    }
+    /* Smooth scroll */
+    html { scroll-behavior: smooth; }
+    /* Custom scrollbar */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: #9ca3af; }
+    /* Transitions base */
+    .transition-all-300 { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+    .transition-all-500 { transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
+    /* Card style */
+    .card {
+      background: white;
+      border-radius: var(--card-radius);
+      border: 1px solid var(--border);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.02), 0 1px 2px rgba(0,0,0,0.03);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .card:hover {
+      box-shadow: 0 8px 30px rgba(139,92,246,0.08), 0 2px 8px rgba(139,92,246,0.04);
+    }
+    /* Button styles */
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+      border-radius: 12px;
+      padding: 10px 20px;
+      font-weight: 500;
+      font-size: 14px;
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      border: none;
+      cursor: pointer;
+    }
+    .btn-primary:hover { background: var(--primary-hover); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(139,92,246,0.3); }
+    .btn-primary:active { transform: translateY(0); }
+    .btn-secondary {
+      background: white;
+      color: var(--text);
+      border-radius: 12px;
+      padding: 10px 20px;
+      font-weight: 500;
+      font-size: 14px;
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      border: 1px solid var(--border);
+      cursor: pointer;
+    }
+    .btn-secondary:hover { background: #FAFAFC; border-color: var(--primary-light); }
+    .btn-outline {
+      background: transparent;
+      color: var(--primary);
+      border-radius: 12px;
+      padding: 8px 16px;
+      font-weight: 500;
+      font-size: 13px;
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      border: 1px solid var(--border);
+      cursor: pointer;
+    }
+    .btn-outline:hover { border-color: var(--primary); background: rgba(139,92,246,0.04); }
+    .btn-ghost {
+      background: transparent;
+      color: var(--text-secondary);
+      border-radius: 10px;
+      padding: 8px 12px;
+      font-weight: 500;
+      font-size: 13px;
+      transition: all 0.2s ease;
+      border: none;
+      cursor: pointer;
+    }
+    .btn-ghost:hover { background: rgba(0,0,0,0.04); color: var(--text); }
+    .btn-danger { background: var(--danger); color: white; border-radius: 12px; padding: 10px 20px; font-weight: 500; font-size: 14px; transition: all 0.25s ease; border: none; cursor: pointer; }
+    .btn-danger:hover { background: #DC2626; transform: translateY(-1px); }
+    .btn-success { background: var(--success); color: white; border-radius: 12px; padding: 8px 16px; font-weight: 500; font-size: 13px; transition: all 0.25s ease; border: none; cursor: pointer; }
+    .btn-success:hover { background: #16A34A; transform: translateY(-1px); }
+    /* Input style */
+    .input-field {
+      width: 100%;
+      padding: 12px 16px;
+      border-radius: 12px;
+      border: 1.5px solid var(--border);
+      background: white;
+      font-size: 14px;
+      transition: all 0.25s ease;
+      outline: none;
+      font-family: 'Inter', sans-serif;
+    }
+    .input-field:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(139,92,246,0.1); }
+    .input-field::placeholder { color: #9CA3AF; }
+    /* Sidebar */
+    .sidebar-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 16px;
+      border-radius: 12px;
+      color: var(--text-secondary);
+      font-size: 14px;
+      font-weight: 500;
+      transition: all 0.2s ease;
+      cursor: pointer;
+      text-decoration: none;
+    }
+    .sidebar-item:hover { background: white; color: var(--text); }
+    .sidebar-item.active { background: white; color: var(--primary); box-shadow: 0 1px 3px rgba(139,92,246,0.08); }
+    /* Tab style */
+    .tab-btn {
+      padding: 8px 20px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 500;
+      transition: all 0.25s ease;
+      cursor: pointer;
+      border: none;
+      background: transparent;
+      color: var(--text-secondary);
+    }
+    .tab-btn.active { background: white; color: var(--text); box-shadow: 0 1px 3px rgba(0,0,0,0.06); }
+    /* Badge */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 2px 10px;
+      border-radius: 100px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+    .badge-green { background: rgba(34,197,94,0.1); color: #16A34A; }
+    .badge-yellow { background: rgba(245,158,11,0.1); color: #D97706; }
+    .badge-red { background: rgba(239,68,68,0.1); color: #DC2626; }
+    .badge-purple { background: rgba(139,92,246,0.1); color: var(--primary); }
+    .badge-blue { background: rgba(59,130,246,0.1); color: #2563EB; }
+    .badge-gray { background: rgba(107,114,128,0.1); color: var(--text-secondary); }
+    /* Progress bar */
+    .progress-bar {
+      height: 6px;
+      background: #F3F4F6;
+      border-radius: 100px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      border-radius: 100px;
+      background: var(--primary);
+      transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    /* Animations */
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    @keyframes slideInRight {
+      from { opacity: 0; transform: translateX(20px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+    @keyframes pulse-ring {
+      0% { transform: scale(0.95); opacity: 0.7; }
+      50% { transform: scale(1); opacity: 0.3; }
+      100% { transform: scale(1.05); opacity: 0; }
+    }
+    @keyframes spin-slow {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    @keyframes shimmer {
+      0% { background-position: -200% 0; }
+      100% { background-position: 200% 0; }
+    }
+    @keyframes scaleIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
+    }
+    .animate-fadeInUp { animation: fadeInUp 0.5s ease forwards; }
+    .animate-fadeIn { animation: fadeIn 0.4s ease forwards; }
+    .animate-slideInRight { animation: slideInRight 0.4s ease forwards; }
+    .animate-scaleIn { animation: scaleIn 0.3s ease forwards; }
+    .animate-float { animation: float 3s ease-in-out infinite; }
+    .animate-spin-slow { animation: spin-slow 2s linear infinite; }
+    /* Shimmer loading */
+    .shimmer {
+      background: linear-gradient(90deg, #f0f0f0 25%, #f8f8f8 50%, #f0f0f0 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.5s infinite;
+    }
+    /* Page transitions */
+    .page {
+      display: none;
+      opacity: 0;
+    }
+    .page.active {
+      display: block;
+      animation: fadeInUp 0.4s ease forwards;
+    }
+    /* Agent node */
+    .agent-node {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 16px;
+      border-radius: 14px;
+      background: white;
+      border: 1px solid var(--border);
+      transition: all 0.3s ease;
+    }
+    .agent-node.completed { border-color: var(--success); background: rgba(34,197,94,0.03); }
+    .agent-node.running { border-color: var(--primary); background: rgba(139,92,246,0.03); box-shadow: 0 0 0 2px rgba(139,92,246,0.08); }
+    .agent-node.pending { opacity: 0.5; }
+    /* Role switcher */
+    .role-switcher {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 6px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+    }
+    .role-btn {
+      padding: 8px 16px;
+      border-radius: 11px;
+      font-size: 12px;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      color: var(--text-secondary);
+      background: transparent;
+    }
+    .role-btn.active { background: var(--primary); color: white; }
+    .role-btn:hover:not(.active) { background: #F4F1FF; }
+    /* Stats card */
+    .stat-card {
+      padding: 20px 24px;
+      border-radius: var(--card-radius);
+      background: white;
+      border: 1px solid var(--border);
+      transition: all 0.3s ease;
+    }
+    .stat-card:hover { box-shadow: 0 8px 30px rgba(139,92,246,0.06); }
+    /* Pulse dot */
+    .pulse-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--success);
+      position: relative;
+    }
+    .pulse-dot::after {
+      content: '';
+      position: absolute;
+      inset: -3px;
+      border-radius: 50%;
+      border: 2px solid var(--success);
+      animation: pulse-ring 2s infinite;
+    }
+    /* Gradient text */
+    .gradient-text {
+      background: linear-gradient(135deg, #8B5CF6, #C4B5FD);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    /* Tab content */
+    .tab-content { display: none; }
+    .tab-content.active { display: block; animation: fadeIn 0.3s ease; }
+    /* Avatar */
+    .avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+    /* Tooltip */
+    .tooltip { position: relative; }
+    .tooltip::after {
+      content: attr(data-tip);
+      position: absolute;
+      bottom: calc(100% + 6px);
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 4px 10px;
+      background: #111827;
+      color: white;
+      font-size: 12px;
+      border-radius: 8px;
+      white-space: nowrap;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.2s ease;
+    }
+    .tooltip:hover::after { opacity: 1; }
+    /* Voice button pulse */
+    .voice-btn { position: relative; }
+    .voice-btn.recording::before {
+      content: '';
+      position: absolute;
+      inset: -4px;
+      border-radius: 50%;
+      background: var(--danger);
+      animation: pulse-ring 1.5s infinite;
+    }
+    /* Toast */
+    .toast {
+      position: fixed;
+      top: 24px;
+      right: 24px;
+      z-index: 10000;
+      padding: 14px 20px;
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 14px;
+      font-weight: 500;
+      transform: translateX(120%);
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .toast.show { transform: translateX(0); }
+    /* Notification dot */
+    .notif-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--danger);
+    }
+    /* Dark Mode */
+    [data-theme="dark"] body {
+      background: #0F0F13;
+      color: #EDEDEE;
+    }
+    [data-theme="dark"] .card {
+      background: #1A1A23;
+      border-color: #2A2A35;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    }
+    [data-theme="dark"] .card:hover {
+      box-shadow: 0 8px 30px rgba(139,92,246,0.12);
+    }
+    [data-theme="dark"] .stat-card {
+      background: #1A1A23;
+      border-color: #2A2A35;
+    }
+    [data-theme="dark"] .stat-card:hover {
+      box-shadow: 0 8px 30px rgba(139,92,246,0.08);
+    }
+    [data-theme="dark"] .sidebar-item:hover,
+    [data-theme="dark"] .sidebar-item.active {
+      background: #1A1A23;
+    }
+    [data-theme="dark"] .input-field {
+      background: #1A1A23;
+      border-color: #2A2A35;
+      color: #EDEDEE;
+    }
+    [data-theme="dark"] .input-field:focus {
+      border-color: var(--primary);
+    }
+    [data-theme="dark"] .btn-secondary {
+      background: #1A1A23;
+      border-color: #2A2A35;
+      color: #EDEDEE;
+    }
+    [data-theme="dark"] .btn-secondary:hover {
+      background: #2A2A35;
+    }
+    [data-theme="dark"] .btn-ghost:hover {
+      background: rgba(255,255,255,0.05);
+      color: #EDEDEE;
+    }
+    [data-theme="dark"] .tab-btn.active {
+      background: #1A1A23;
+      color: #EDEDEE;
+    }
+    [data-theme="dark"] .agent-node {
+      background: #1A1A23;
+      border-color: #2A2A35;
+    }
+    [data-theme="dark"] .role-switcher {
+      background: #1A1A23;
+      border-color: #2A2A35;
+    }
+    [data-theme="dark"] .toast {
+      background: #1A1A23;
+      border-color: #2A2A35;
+    }
+    [data-theme="dark"] ::-webkit-scrollbar-thumb {
+      background: #3A3A45;
+    }
+    [data-theme="dark"] .progress-bar {
+      background: #2A2A35;
+    }
+    [data-theme="dark"] #sidebar {
+      background: #14141C;
+      border-color: #2A2A35;
+    }
+    [data-theme="dark"] .main-area {
+      background: #0F0F13;
+    }
+    [data-theme="dark"] .sticky.top-0 {
+      background: rgba(15,15,19,0.8) !important;
+      border-color: #2A2A35 !important;
+    }
+    [data-theme="dark"] .text-\[\#111827\] {
+      color: #EDEDEE;
+    }
+    [data-theme="dark"] .bg-\[\#FAFAFC\] {
+      background: #1A1A23;
+    }
+    [data-theme="dark"] .bg-\[\#F3F4F6\] {
+      background: #2A2A35;
+    }
+    [data-theme="dark"] .hover\:bg-\[\#FAFAFC\]:hover {
+      background: #2A2A35 !important;
+    }
+    [data-theme="dark"] .text-\[\#6B7280\] {
+      color: #9CA3AF;
+    }
+    [data-theme="dark"] .border-\[\#ECE8FF\] {
+      border-color: #2A2A35;
+    }
+    [data-theme="dark"] .bg-\[\#F4F1FF\] {
+      background: #14141C;
+    }
+    /* Responsive tweaks */
+    @media (max-width: 1024px) {
+      .sidebar { width: 72px !important; }
+      .sidebar .sidebar-label { display: none; }
+    }
+    @media (max-width: 768px) {
+      .main-area { margin-left: 72px !important; }
+    }
+  </style>
+</head>
+<body>
+<!-- ============================================ -->
+<!-- TOAST NOTIFICATION -->
+<!-- ============================================ -->
+<div id="toast" class="toast">
+  <i data-lucide="check-circle" class="w-5 h-5 text-green-500"></i>
+  <span id="toastMessage">Action completed successfully!</span>
+</div>
+
+<!-- ============================================ -->
+<!-- LOGIN / REGISTER SCREEN -->
+<!-- ============================================ -->
+<div id="loginScreen" class="min-h-screen flex">
+  <!-- Left Panel -->
+  <div class="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-[#8B5CF6] via-[#7C3AED] to-[#6D28D9] relative overflow-hidden items-center justify-center p-12">
+    <div class="absolute inset-0 opacity-[0.06]">
+      <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-white rounded-full blur-3xl"></div>
+      <div class="absolute bottom-1/3 right-1/4 w-64 h-64 bg-white rounded-full blur-2xl"></div>
+    </div>
+    <div class="relative z-10 max-w-lg text-center">
+      <div class="flex items-center justify-center gap-2 mb-8">
+        <div class="w-10 h-10 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center">
+          <i data-lucide="git-merge" class="w-6 h-6 text-white"></i>
+        </div>
+        <span class="text-2xl font-bold text-white tracking-tight">Second Commit</span>
+      </div>
+      <h1 class="text-4xl font-bold text-white leading-tight mb-4">Revive Ideas.<br><span class="text-[#C4B5FD]">Build Together.</span></h1>
+      <p class="text-[#C4B5FD]/80 text-lg mb-12">AI-powered platform that predicts whether abandoned repositories are worth reviving.</p>
+                 <!-- Illustration -->
+      <div class="relative mx-auto w-80 h-80 flex items-center justify-center">
+        
+        <!-- Center circle (Placed first with z-10) -->
+        <div class="absolute inset-12 bg-white/10 backdrop-blur-sm rounded-full border border-white/20 flex items-center justify-center z-10">
+          <i data-lucide="git-merge" class="w-16 h-16 text-white"></i>
+        </div>
+
+        <!-- Orbiting circles container (Moved to front with z-20 & smooth 40s duration) -->
+        <div class="absolute inset-0 animate-spin-slow z-20" style="animation-duration: 40s;">
+          <div class="absolute inset-0 w-full h-full">
+            
+            <!-- Icon 1: GitHub (0 deg) [FIXED: Native SVG ensures 100% rendering success] -->
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" style="transform: translate(-50%, -50%) rotate(0deg) translateY(-120px) rotate(0deg);">
+              <div class="w-12 h-12 bg-white/10 backdrop-blur-sm rounded-2xl border border-white/20 flex items-center justify-center animate-float">
+                <svg class="w-6 h-6 text-white" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
+                </svg>
+              </div>
+            </div>
+            
+            <!-- Icon 2: Brain (72 deg) -->
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" style="transform: translate(-50%, -50%) rotate(72deg) translateY(-120px) rotate(-72deg);">
+              <div class="w-12 h-12 bg-white/10 backdrop-blur-sm rounded-2xl border border-white/20 flex items-center justify-center animate-float" style="animation-delay: 0.5s;">
+                <i data-lucide="brain" class="w-6 h-6 text-white"></i>
+              </div>
+            </div>
+            
+            <!-- Icon 3: Users (144 deg) -->
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" style="transform: translate(-50%, -50%) rotate(144deg) translateY(-120px) rotate(-144deg);">
+              <div class="w-12 h-12 bg-white/10 backdrop-blur-sm rounded-2xl border border-white/20 flex items-center justify-center animate-float" style="animation-delay: 1s;">
+                <i data-lucide="users" class="w-6 h-6 text-white"></i>
+              </div>
+            </div>
+            
+            <!-- Icon 4: Bar Chart (216 deg) -->
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" style="transform: translate(-50%, -50%) rotate(216deg) translateY(-120px) rotate(-216deg);">
+              <div class="w-12 h-12 bg-white/10 backdrop-blur-sm rounded-2xl border border-white/20 flex items-center justify-center animate-float" style="animation-delay: 1.5s;">
+                <i data-lucide="bar-chart-2" class="w-6 h-6 text-white"></i>
+              </div>
+            </div>
+            
+            <!-- Icon 5: Terminal / Code (288 deg) -->
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" style="transform: translate(-50%, -50%) rotate(288deg) translateY(-120px) rotate(-288deg);">
+              <div class="w-12 h-12 bg-white/10 backdrop-blur-sm rounded-2xl border border-white/20 flex items-center justify-center animate-float" style="animation-delay: 2s;">
+                <i data-lucide="terminal" class="w-6 h-6 text-white"></i>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+
+      <!-- Auth timeline -->
+      <div class="mt-10 flex items-center justify-center gap-6 text-sm text-[#C4B5FD]/70">
+        <div class="flex items-center gap-2">
+          <i data-lucide="check" class="w-4 h-4 text-green-400"></i>
+          <span>Connect GitHub</span>
+        </div>
+        <div class="w-6 h-px bg-white/20"></div>
+        <div class="flex items-center gap-2">
+          <i data-lucide="check" class="w-4 h-4 text-green-400"></i>
+          <span>Select Role</span>
+        </div>
+        <div class="w-6 h-px bg-white/20"></div>
+        <div class="flex items-center gap-2">
+          <i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i>
+          <span>AI Analysis</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right Panel -->
+  <div class="w-full lg:w-1/2 flex items-center justify-center p-8 bg-[#FAFAFC]">
+    <div class="w-full max-w-md">
+      <div class="text-center lg:hidden mb-8">
+        <div class="flex items-center justify-center gap-2 mb-2">
+          <div class="w-8 h-8 bg-gradient-to-br from-[#8B5CF6] to-[#C4B5FD] rounded-lg flex items-center justify-center">
+            <i data-lucide="git-merge" class="w-5 h-5 text-white"></i>
+          </div>
+          <span class="text-xl font-bold text-[#111827] tracking-tight">Second Commit</span>
+        </div>
+        <p class="text-sm text-[#6B7280]">Revive Ideas. Build Together.</p>
+      </div>
+
+      <!-- Login/Register Tabs -->
+      <div class="flex gap-2 bg-[#F3F4F6] p-1.5 rounded-2xl mb-8">
+        <button class="auth-tab flex-1 py-2.5 px-6 rounded-xl font-medium text-sm transition-all duration-300" data-tab="login" onclick="switchAuthTab('login')">
+          Sign In
+        </button>
+        <button class="auth-tab flex-1 py-2.5 px-6 rounded-xl font-medium text-sm transition-all duration-300" data-tab="register" onclick="switchAuthTab('register')">
+          Create Account
+        </button>
+      </div>
+
+      <!-- Login Form -->
+      <div id="loginForm" class="auth-form">
+        <div class="card p-8">
+          <h2 class="text-2xl font-bold text-[#111827] mb-1">Welcome back</h2>
+          <p class="text-[#6B7280] text-sm mb-6">Sign in to continue to Second Commit</p>
+          <div class="space-y-4">
+            <div>
+              <label class="block text-sm font-medium text-[#6B7280] mb-1.5">Email</label>
+              <input type="email" class="input-field" placeholder="you@company.com" value="demo@secondcommit.io" />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-[#6B7280] mb-1.5">Password</label>
+              <input type="password" class="input-field" placeholder="••••••••" value="demo123" />
+            </div>
+            <div class="flex items-center justify-between">
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" class="w-4 h-4 rounded border-[#ECE8FF] text-[#8B5CF6] focus:ring-[#8B5CF6]" checked />
+                <span class="text-sm text-[#6B7280]">Remember me</span>
+              </label>
+              <button class="text-sm text-[#8B5CF6] hover:text-[#7C3AED] font-medium transition-colors">Forgot password?</button>
+            </div>
+            <button onclick="handleLogin()" class="btn-primary w-full flex items-center justify-center gap-2 py-3">
+              <i data-lucide="log-in" class="w-4 h-4"></i>
+              Sign In
+            </button>
+          </div>
+          <div class="relative my-6">
+            <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-[#ECE8FF]"></div></div>
+            <div class="relative flex justify-center"><span class="bg-white px-3 text-xs text-[#6B7280]">Or continue with</span></div>
+          </div>
+          <button class="btn-secondary w-full flex items-center justify-center gap-3 py-3">
+            <i data-lucide="github" class="w-5 h-5"></i>
+            <span>Continue with GitHub</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Register Form -->
+      <div id="registerForm" class="auth-form" style="display:none;">
+        <div class="card p-8">
+          <h2 class="text-2xl font-bold text-[#111827] mb-1">Create account</h2>
+          <p class="text-[#6B7280] text-sm mb-6">Start your journey with Second Commit</p>
+          <div class="space-y-4">
+            <div>
+              <label class="block text-sm font-medium text-[#6B7280] mb-1.5">Full Name</label>
+              <input type="text" class="input-field" placeholder="John Doe" />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-[#6B7280] mb-1.5">GitHub Username</label>
+              <input type="text" class="input-field" placeholder="johndoe" />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-[#6B7280] mb-1.5">Email</label>
+              <input type="email" class="input-field" placeholder="you@company.com" />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-[#6B7280] mb-1.5">Password</label>
+              <input type="password" class="input-field" placeholder="Create a password" />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-[#6B7280] mb-1.5">Role</label>
+              <select class="input-field">
+                <option>Startup Owner</option>
+                <option>Freelancer</option>
+              </select>
+            </div>
+            <button onclick="handleLogin()" class="btn-primary w-full flex items-center justify-center gap-2 py-3">
+              <i data-lucide="user-plus" class="w-4 h-4"></i>
+              Create Account
+            </button>
+          </div>
+          <div class="relative my-6">
+            <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-[#ECE8FF]"></div></div>
+            <div class="relative flex justify-center"><span class="bg-white px-3 text-xs text-[#6B7280]">Or continue with</span></div>
+          </div>
+          <button class="btn-secondary w-full flex items-center justify-center gap-3 py-3">
+            <i data-lucide="github" class="w-5 h-5"></i>
+            <span>Continue with GitHub</span>
+          </button>
+        </div>
+      </div>
+
+      <p class="text-center text-xs text-[#6B7280] mt-6">
+        By continuing, you agree to our <a href="#" class="text-[#8B5CF6] hover:underline">Terms</a> and <a href="#" class="text-[#8B5CF6] hover:underline">Privacy Policy</a>
+      </p>
+    </div>
+  </div>
+</div>
+<!-- ============================================ -->
+<!-- MAIN APP (hidden until login) -->
+<!-- ============================================ -->
+<div id="appMain" class="min-h-screen bg-[#FAFAFC]" style="display:none;">
+  <!-- Sidebar -->
+  <div id="sidebar" class="sidebar fixed left-0 top-0 h-full w-[240px] bg-[#F4F1FF] border-r border-[#ECE8FF] z-40 flex flex-col transition-all duration-300 overflow-y-auto">
+    <!-- Logo -->
+    <div class="flex items-center gap-2.5 px-5 py-5 border-b border-[#ECE8FF]/60">
+      <div class="w-8 h-8 bg-gradient-to-br from-[#8B5CF6] to-[#C4B5FD] rounded-lg flex items-center justify-center flex-shrink-0">
+        <i data-lucide="git-merge" class="w-4 h-4 text-white"></i>
+      </div>
+      <span class="sidebar-label text-lg font-bold text-[#111827] tracking-tight">Second Commit</span>
+    </div>
+
+    <!-- Nav items for Startup Owner -->
+    <div id="startupOwnerNav" class="nav-group flex-1 px-3 py-4 space-y-1">
+      <div class="sidebar-item active" onclick="navigateTo('dashboard')" data-page="dashboard">
+        <i data-lucide="layout-dashboard" class="w-5 h-5 flex-shrink-0"></i>
+        <span class="sidebar-label">Dashboard</span>
+      </div>
+      <div class="sidebar-item" onclick="navigateTo('my-ideas')" data-page="my-ideas">
+        <i data-lucide="lightbulb" class="w-5 h-5 flex-shrink-0"></i>
+        <span class="sidebar-label">My Ideas</span>
+      </div>
+      <div class="sidebar-item" onclick="navigateTo('repositories')" data-page="repositories">
+        <i data-lucide="github" class="w-5 h-5 flex-shrink-0"></i>
+        <span class="sidebar-label">Repositories</span>
+      </div>
+      <div class="sidebar-item" onclick="navigateTo('analysis')" data-page="analysis">
+        <i data-lucide="brain" class="w-5 h-5 flex-shrink-0"></i>
+        <span class="sidebar-label">Analysis</span>
+      </div>
+      <div class="sidebar-item" onclick="navigateTo('contributors')" data-page="contributors">
+        <i data-lucide="users" class="w-5 h-5 flex-shrink-0"></i>
+        <span class="sidebar-label">Contributors</span>
+      </div>
+      <div class="sidebar-item" onclick="navigateTo('outreach')" data-page="outreach">
+        <i data-lucide="send" class="w-5 h-5 flex-shrink-0"></i>
+        <span class="sidebar-label">Outreach</span>
+      </div>
+      <div class="sidebar-item" onclick="navigateTo('messages')" data-page="messages">
+        <i data-lucide="message-square" class="w-5 h-5 flex-shrink-0"></i>
+        <span class="sidebar-label">Messages</span>
+      </div>
+      <div class="pt-4 mt-4 border-t border-[#ECE8FF]/60">
+        <div class="sidebar-item" onclick="navigateTo('settings')" data-page="settings">
+          <i data-lucide="settings" class="w-5 h-5 flex-shrink-0"></i>
+          <span class="sidebar-label">Settings</span>
+        </div>
+        <div class="sidebar-item" onclick="navigateTo('profile')" data-page="profile">
+          <i data-lucide="user" class="w-5 h-5 flex-shrink-0"></i>
+          <span class="sidebar-label">Profile</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Nav items for Freelancer -->
+    <div id="freelancerNav" class="nav-group flex-1 px-3 py-4 space-y-1" style="display:none;">
+      <div class="sidebar-item active" onclick="navigateTo('freelancer-dashboard')" data-page="freelancer-dashboard">
+        <i data-lucide="layout-dashboard" class="w-5 h-5 flex-shrink-0"></i>
+        <span class="sidebar-label">Dashboard</span>
+      </div>
+      <div class="sidebar-item" onclick="navigateTo('freelancer-skills')" data-page="freelancer-skills">
+        <i data-lucide="code" class="w-5 h-5 flex-shrink-0"></i>
+        <span class="sidebar-label">My Skills</span>
+      </div>
+      <div class="sidebar-item" onclick="navigateTo('freelancer-github')" data-page="freelancer-github">
+        <i data-lucide="github" class="w-5 h-5 flex-shrink-0"></i>
+        <span class="sidebar-label">My GitHub</span>
+      </div>
+      <div class="sidebar-item" onclick="navigateTo('freelancer-recommendations')" data-page="freelancer-recommendations">
+        <i data-lucide="sparkles" class="w-5 h-5 flex-shrink-0"></i>
+        <span class="sidebar-label">Recommendations</span>
+      </div>
+      <div class="sidebar-item" onclick="navigateTo('freelancer-invitations')" data-page="freelancer-invitations">
+        <i data-lucide="mail" class="w-5 h-5 flex-shrink-0"></i>
+        <span class="sidebar-label">Invitations</span>
+      </div>
+      <div class="sidebar-item" onclick="navigateTo('freelancer-projects')" data-page="freelancer-projects">
+        <i data-lucide="folder" class="w-5 h-5 flex-shrink-0"></i>
+        <span class="sidebar-label">Projects</span>
+      </div>
+      <div class="sidebar-item" onclick="navigateTo('freelancer-profile')" data-page="freelancer-profile">
+        <i data-lucide="user" class="w-5 h-5 flex-shrink-0"></i>
+        <span class="sidebar-label">Profile</span>
+      </div>
+    </div>
+
+    <!-- Nav items for Admin -->
+    <div id="adminNav" class="nav-group flex-1 px-3 py-4 space-y-1" style="display:none;">
+      <div class="sidebar-item active" onclick="navigateTo('admin-dashboard')" data-page="admin-dashboard">
+        <i data-lucide="layout-dashboard" class="w-5 h-5 flex-shrink-0"></i>
+        <span class="sidebar-label">Dashboard</span>
+      </div>
+      <div class="sidebar-item" onclick="navigateTo('admin-users')" data-page="admin-users">
+        <i data-lucide="users" class="w-5 h-5 flex-shrink-0"></i>
+        <span class="sidebar-label">Users</span>
+      </div>
+      <div class="sidebar-item" onclick="navigateTo('admin-ideas')" data-page="admin-ideas">
+        <i data-lucide="lightbulb" class="w-5 h-5 flex-shrink-0"></i>
+        <span class="sidebar-label">Ideas</span>
+      </div>
+      <div class="sidebar-item" onclick="navigateTo('admin-repositories')" data-page="admin-repositories">
+        <i data-lucide="github" class="w-5 h-5 flex-shrink-0"></i>
+        <span class="sidebar-label">Repositories</span>
+      </div>
+      <div class="sidebar-item" onclick="navigateTo('admin-analytics')" data-page="admin-analytics">
+        <i data-lucide="bar-chart" class="w-5 h-5 flex-shrink-0"></i>
+        <span class="sidebar-label">Analytics</span>
+      </div>
+      <div class="sidebar-item" onclick="navigateTo('admin-reports')" data-page="admin-reports">
+        <i data-lucide="file-text" class="w-5 h-5 flex-shrink-0"></i>
+        <span class="sidebar-label">Reports</span>
+      </div>
+      <div class="sidebar-item" onclick="navigateTo('admin-activity')" data-page="admin-activity">
+        <i data-lucide="activity" class="w-5 h-5 flex-shrink-0"></i>
+        <span class="sidebar-label">Activity</span>
+      </div>
+    </div>
+
+    <!-- User info at bottom -->
+    <div class="px-3 py-4 border-t border-[#ECE8FF]/60">
+      <div class="flex items-center gap-3 px-2">
+        <div class="w-8 h-8 rounded-full bg-gradient-to-br from-[#8B5CF6] to-[#C4B5FD] flex items-center justify-center text-white text-xs font-bold">JD</div>
+        <div class="flex-1 min-w-0">
+          <p class="sidebar-label text-sm font-medium text-[#111827] truncate">John Doe</p>
+          <p class="sidebar-label text-xs text-[#6B7280] truncate">demo@secondcommit.io</p>
+        </div>
+        <button onclick="handleLogout()" class="btn-ghost p-1.5 tooltip" data-tip="Logout">
+          <i data-lucide="log-out" class="w-4 h-4"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content Area -->
+  <div class="main-area ml-[240px] min-h-screen transition-all duration-300">
+    <!-- Top Bar -->
+    <div class="sticky top-0 z-30 bg-[#FAFAFC]/80 backdrop-blur-xl border-b border-[#ECE8FF]/60">
+      <div class="flex items-center justify-between px-8 py-4">
+        <div class="flex items-center gap-3">
+          <h1 id="pageTitle" class="text-xl font-bold text-[#111827]">Dashboard</h1>
+          <span id="roleBadge" class="badge badge-purple text-xs">Startup Owner</span>
+        </div>
+        <div class="flex items-center gap-4">
+          <!-- Search -->
+          <div class="relative hidden sm:block">
+            <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280]"></i>
+            <input type="text" placeholder="Search..." class="input-field pl-10 py-2 w-64 text-sm" />
+          </div>
+          <!-- Dark Mode Toggle -->
+          <button id="darkModeToggle" onclick="toggleDarkMode()" class="btn-ghost p-2 tooltip" data-tip="Toggle Dark Mode">
+            <i data-lucide="moon" class="w-5 h-5"></i>
+          </button>
+          <!-- Notifications -->
+          <button onclick="showToast('No new notifications')" class="btn-ghost p-2 relative">
+            <i data-lucide="bell" class="w-5 h-5"></i>
+            <span class="notif-dot absolute top-1.5 right-1.5"></span>
+          </button>
+          <!-- User menu -->
+          <div class="flex items-center gap-3">
+            <div class="w-8 h-8 rounded-full bg-gradient-to-br from-[#8B5CF6] to-[#C4B5FD] flex items-center justify-center text-white text-xs font-bold cursor-pointer">JD</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Page Content -->
+    <div class="p-8">
+<!-- ============================================ -->
+<!-- STARTUP OWNER PAGES -->
+<!-- ============================================ -->
+
+<!-- DASHBOARD -->
+<div id="page-dashboard" class="page active">
+  <!-- Stats Row -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
+    <div class="stat-card">
+      <div class="flex items-center justify-between mb-3">
+        <div class="w-10 h-10 rounded-xl bg-[#8B5CF6]/10 flex items-center justify-center">
+          <i data-lucide="lightbulb" class="w-5 h-5 text-[#8B5CF6]"></i>
+        </div>
+        <span class="text-2xl font-bold text-[#111827]">12</span>
+      </div>
+      <p class="text-sm text-[#6B7280]">Ideas Submitted</p>
+      <div class="flex items-center gap-1 mt-1">
+        <span class="text-xs text-[#22C55E]">↑ 3 this week</span>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="flex items-center justify-between mb-3">
+        <div class="w-10 h-10 rounded-xl bg-[#22C55E]/10 flex items-center justify-center">
+          <i data-lucide="github" class="w-5 h-5 text-[#22C55E]"></i>
+        </div>
+        <span class="text-2xl font-bold text-[#111827]">8</span>
+      </div>
+      <p class="text-sm text-[#6B7280]">Active Analyses</p>
+      <div class="flex items-center gap-1 mt-1">
+        <span class="text-xs text-[#22C55E]">↑ 2 this week</span>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="flex items-center justify-between mb-3">
+        <div class="w-10 h-10 rounded-xl bg-[#F59E0B]/10 flex items-center justify-center">
+          <i data-lucide="file-text" class="w-5 h-5 text-[#F59E0B]"></i>
+        </div>
+        <span class="text-2xl font-bold text-[#111827]">6</span>
+      </div>
+      <p class="text-sm text-[#6B7280]">Reports Generated</p>
+      <div class="flex items-center gap-1 mt-1">
+        <span class="text-xs text-[#22C55E]">↑ 1 this week</span>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="flex items-center justify-between mb-3">
+        <div class="w-10 h-10 rounded-xl bg-[#8B5CF6]/10 flex items-center justify-center">
+          <i data-lucide="users" class="w-5 h-5 text-[#8B5CF6]"></i>
+        </div>
+        <span class="text-2xl font-bold text-[#111827]">24</span>
+      </div>
+      <p class="text-sm text-[#6B7280]">Contributors Contacted</p>
+      <div class="flex items-center gap-1 mt-1">
+        <span class="text-xs text-[#22C55E]">↑ 5 this week</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pipeline Progress + Recent Activity -->
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+    <!-- Pipeline Progress -->
+    <div class="card p-6">
+      <h3 class="text-base font-semibold text-[#111827] mb-4">Pipeline Progress</h3>
+      <div class="space-y-4">
+        <div>
+          <div class="flex justify-between text-sm mb-1.5">
+            <span class="text-[#6B7280]">Ideas → Refined</span>
+            <span class="font-medium text-[#111827]">10/12</span>
+          </div>
+          <div class="progress-bar"><div class="progress-fill" style="width:83%"></div></div>
+        </div>
+        <div>
+          <div class="flex justify-between text-sm mb-1.5">
+            <span class="text-[#6B7280]">Refined → Analysed</span>
+            <span class="font-medium text-[#111827]">8/10</span>
+          </div>
+          <div class="progress-bar"><div class="progress-fill" style="width:80%"></div></div>
+        </div>
+        <div>
+          <div class="flex justify-between text-sm mb-1.5">
+            <span class="text-[#6B7280]">Analysed → Reports</span>
+            <span class="font-medium text-[#111827]">6/8</span>
+          </div>
+          <div class="progress-bar"><div class="progress-fill" style="width:75%"></div></div>
+        </div>
+        <div>
+          <div class="flex justify-between text-sm mb-1.5">
+            <span class="text-[#6B7280]">Reports → Outreach</span>
+            <span class="font-medium text-[#111827]">4/6</span>
+          </div>
+          <div class="progress-bar"><div class="progress-fill" style="width:67%"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recent Activity -->
+    <div class="card p-6">
+      <h3 class="text-base font-semibold text-[#111827] mb-4">Recent Activity</h3>
+      <div class="space-y-3">
+        <div class="flex items-start gap-3 p-3 rounded-xl hover:bg-[#FAFAFC] transition-colors">
+          <div class="w-8 h-8 rounded-lg bg-[#8B5CF6]/10 flex items-center justify-center flex-shrink-0"><i data-lucide="check-circle" class="w-4 h-4 text-[#8B5CF6]"></i></div>
+          <div>
+            <p class="text-sm font-medium text-[#111827]">Idea refined successfully</p>
+            <p class="text-xs text-[#6B7280] mt-0.5">"AI Code Review Tool" → Ready for analysis</p>
+            <p class="text-xs text-[#9CA3AF] mt-0.5">2 hours ago</p>
+          </div>
+        </div>
+        <div class="flex items-start gap-3 p-3 rounded-xl hover:bg-[#FAFAFC] transition-colors">
+          <div class="w-8 h-8 rounded-lg bg-[#22C55E]/10 flex items-center justify-center flex-shrink-0"><i data-lucide="file-text" class="w-4 h-4 text-[#22C55E]"></i></div>
+          <div>
+            <p class="text-sm font-medium text-[#111827]">New revival report generated</p>
+            <p class="text-xs text-[#6B7280] mt-0.5">"OpenAPI Docs Generator" - Revival score: 78%</p>
+            <p class="text-xs text-[#9CA3AF] mt-0.5">5 hours ago</p>
+          </div>
+        </div>
+        <div class="flex items-start gap-3 p-3 rounded-xl hover:bg-[#FAFAFC] transition-colors">
+          <div class="w-8 h-8 rounded-lg bg-[#F59E0B]/10 flex items-center justify-center flex-shrink-0"><i data-lucide="users" class="w-4 h-4 text-[#F59E0B]"></i></div>
+          <div>
+            <p class="text-sm font-medium text-[#111827]">Contributors matched</p>
+            <p class="text-xs text-[#6B7280] mt-0.5">5 new contributors found for "ML Pipeline Builder"</p>
+            <p class="text-xs text-[#9CA3AF] mt-0.5">1 day ago</p>
+          </div>
+        </div>
+        <div class="flex items-start gap-3 p-3 rounded-xl hover:bg-[#FAFAFC] transition-colors">
+          <div class="w-8 h-8 rounded-lg bg-[#EF4444]/10 flex items-center justify-center flex-shrink-0"><i data-lucide="send" class="w-4 h-4 text-[#EF4444]"></i></div>
+          <div>
+            <p class="text-sm font-medium text-[#111827]">Outreach sent</p>
+            <p class="text-xs text-[#6B7280] mt-0.5">3 messages sent to potential contributors</p>
+            <p class="text-xs text-[#9CA3AF] mt-0.5">2 days ago</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quick Actions -->
+  <div class="card p-6">
+    <h3 class="text-base font-semibold text-[#111827] mb-4">Quick Actions</h3>
+    <div class="flex flex-wrap gap-3">
+      <button onclick="navigateTo('my-ideas')" class="btn-primary flex items-center gap-2">
+        <i data-lucide="plus" class="w-4 h-4"></i>
+        New Idea
+      </button>
+      <button onclick="navigateTo('analysis')" class="btn-secondary flex items-center gap-2">
+        <i data-lucide="eye" class="w-4 h-4"></i>
+        View Reports
+      </button>
+      <button onclick="navigateTo('repositories')" class="btn-secondary flex items-center gap-2">
+        <i data-lucide="search" class="w-4 h-4"></i>
+        Browse Repos
+      </button>
+      <button onclick="navigateTo('contributors')" class="btn-secondary flex items-center gap-2">
+        <i data-lucide="users" class="w-4 h-4"></i>
+        Find Contributors
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- MY IDEAS PAGE -->
+<div id="page-my-ideas" class="page">
+  <div class="flex items-center justify-between mb-6">
+    <div>
+      <p class="text-sm text-[#6B7280]">Submit a new idea for AI analysis</p>
+    </div>
+    <button onclick="showSubmitIdea()" class="btn-primary flex items-center gap-2">
+      <i data-lucide="plus" class="w-4 h-4"></i>
+      New Idea
+    </button>
+  </div>
+
+  <!-- Submit Idea Card (hidden initially) -->
+  <div id="submitIdeaCard" class="card p-6 mb-6" style="display:none;">
+    <h3 class="text-lg font-semibold text-[#111827] mb-4">Submit Your Idea</h3>
+    <div class="space-y-4">
+      <div>
+        <label class="block text-sm font-medium text-[#6B7280] mb-1.5">Idea Title</label>
+        <input type="text" class="input-field" placeholder="e.g. AI-Powered Code Review Tool" id="ideaTitle" />
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-[#6B7280] mb-1.5">Describe your idea</label>
+        <textarea id="ideaText" class="input-field min-h-[160px] resize-none" placeholder="Describe the problem your idea solves, target audience, and key features..."></textarea>
+        <div class="flex justify-between mt-1.5">
+          <div class="flex gap-2">
+            <button id="voiceBtn" onclick="toggleVoice()" class="btn-ghost p-2 voice-btn text-sm flex items-center gap-1.5">
+              <i data-lucide="mic" class="w-4 h-4"></i>
+              <span class="hidden sm:inline">Voice Input</span>
+            </button>
+          </div>
+          <span id="charCount" class="text-xs text-[#6B7280]">0 / 1000</span>
+        </div>
+      </div>
+      <!-- Prompt suggestions -->
+      <div class="flex flex-wrap gap-2">
+        <button onclick="suggestPrompt('A tool that uses AI to automatically review and improve code quality in pull requests')" class="btn-outline text-xs py-1.5 px-3">AI Code Review Tool</button>
+        <button onclick="suggestPrompt('An open source platform for managing and deploying machine learning models in production')" class="btn-outline text-xs py-1.5 px-3">ML Platform</button>
+        <button onclick="suggestPrompt('A developer tool that generates comprehensive API documentation from source code automatically')" class="btn-outline text-xs py-1.5 px-3">API Docs Generator</button>
+        <button onclick="suggestPrompt('A real-time collaboration tool for pair programming with built-in video chat')" class="btn-outline text-xs py-1.5 px-3">Pair Programming</button>
+      </div>
+      <!-- Attachments -->
+      <div class="flex items-center gap-3 p-3 rounded-xl bg-[#FAFAFC] border border-dashed border-[#ECE8FF]">
+        <i data-lucide="paperclip" class="w-4 h-4 text-[#6B7280]"></i>
+        <span class="text-sm text-[#6B7280]">Drop files here or click to attach</span>
+        <button class="btn-ghost text-xs ml-auto">Browse</button>
+      </div>
+      <button onclick="submitIdea()" class="btn-primary w-full flex items-center justify-center gap-2 py-3">
+        <i data-lucide="send" class="w-4 h-4"></i>
+        Submit Idea
+      </button>
+    </div>
+  </div>
+
+  <!-- Existing Ideas List -->
+  <div class="space-y-4">
+    <div class="card p-5 flex items-start gap-4 animate-fadeInUp">
+      <div class="w-10 h-10 rounded-xl bg-[#8B5CF6]/10 flex items-center justify-center flex-shrink-0"><i data-lucide="code" class="w-5 h-5 text-[#8B5CF6]"></i></div>
+      <div class="flex-1 min-w-0">
+        <div class="flex items-center gap-2 mb-1">
+          <h4 class="font-semibold text-[#111827]">AI-Powered Code Review Tool</h4>
+          <span class="badge badge-green text-xs">Refined</span>
+        </div>
+        <p class="text-sm text-[#6B7280]">Automated code review tool that integrates with GitHub PRs</p>
+        <div class="flex items-center gap-4 mt-3 text-xs text-[#9CA3AF]">
+          <span>Submitted 2 days ago</span>
+          <span>2 repositories matched</span>
+          <span class="flex items-center gap-1"><i data-lucide="message-square" class="w-3 h-3"></i>3</span>
+        </div>
+      </div>
+      <button onclick="navigateTo('analysis')" class="btn-outline text-xs flex-shrink-0">View Analysis</button>
+    </div>
+    <div class="card p-5 flex items-start gap-4 animate-fadeInUp" style="animation-delay:0.1s">
+      <div class="w-10 h-10 rounded-xl bg-[#22C55E]/10 flex items-center justify-center flex-shrink-0"><i data-lucide="database" class="w-5 h-5 text-[#22C55E]"></i></div>
+      <div class="flex-1 min-w-0">
+        <div class="flex items-center gap-2 mb-1">
+          <h4 class="font-semibold text-[#111827]">ML Pipeline Builder</h4>
+          <span class="badge badge-purple text-xs">Analysed</span>
+        </div>
+        <p class="text-sm text-[#6B7280]">Visual ML pipeline builder with pre-built components</p>
+        <div class="flex items-center gap-4 mt-3 text-xs text-[#9CA3AF]">
+          <span>Submitted 5 days ago</span>
+          <span>4 repositories matched</span>
+          <span class="flex items-center gap-1"><i data-lucide="message-square" class="w-3 h-3"></i>7</span>
+        </div>
+      </div>
+      <button class="btn-outline text-xs flex-shrink-0">View Report</button>
+    </div>
+    <div class="card p-5 flex items-start gap-4 animate-fadeInUp" style="animation-delay:0.2s">
+      <div class="w-10 h-10 rounded-xl bg-[#F59E0B]/10 flex items-center justify-center flex-shrink-0"><i data-lucide="file-text" class="w-5 h-5 text-[#F59E0B]"></i></div>
+      <div class="flex-1 min-w-0">
+        <div class="flex items-center gap-2 mb-1">
+          <h4 class="font-semibold text-[#111827]">OpenAPI Docs Generator</h4>
+          <span class="badge badge-green text-xs">Complete</span>
+        </div>
+        <p class="text-sm text-[#6B7280]">Auto-generate OpenAPI docs from any Express/FastAPI project</p>
+        <div class="flex items-center gap-4 mt-3 text-xs text-[#9CA3AF]">
+          <span>Submitted 1 week ago</span>
+          <span>3 repositories matched</span>
+          <span class="flex items-center gap-1"><i data-lucide="message-square" class="w-3 h-3"></i>5</span>
+        </div>
+      </div>
+      <button class="btn-outline text-xs flex-shrink-0">View Report</button>
+    </div>
+  </div>
+</div>
+<!-- REPOSITORIES PAGE -->
+<div id="page-repositories" class="page">
+  <div class="mb-6">
+    <div class="relative max-w-xl">
+      <i data-lucide="search" class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#6B7280]"></i>
+      <input type="text" id="repoSearch" oninput="searchRepos(this.value)" placeholder="Search GitHub repositories..." class="input-field pl-12 py-3.5 text-base" />
+    </div>
+    <p class="text-sm text-[#6B7280] mt-2">Top matches for your ideas</p>
+  </div>
+
+  <div id="repoResults" class="space-y-4">
+    <div class="card p-6 animate-fadeInUp">
+      <div class="flex items-start justify-between mb-3">
+        <div>
+          <div class="flex items-center gap-2 mb-1">
+            <i data-lucide="github" class="w-5 h-5 text-[#6B7280]"></i>
+            <h3 class="font-semibold text-[#111827]">vercel/next.js</h3>
+            <span class="badge badge-green text-xs">Healthy</span>
+          </div>
+          <p class="text-sm text-[#6B7280]">The React framework for production with hybrid static & server rendering, TypeScript support, and more.</p>
+        </div>
+      </div>
+      <div class="flex flex-wrap items-center gap-4 text-xs text-[#6B7280] mt-3">
+        <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-blue-500"></span>TypeScript</span>
+        <span class="flex items-center gap-1"><i data-lucide="star" class="w-3.5 h-3.5"></i>124.5k</span>
+        <span class="flex items-center gap-1"><i data-lucide="git-branch" class="w-3.5 h-3.5"></i>26.1k</span>
+        <span class="flex items-center gap-1"><i data-lucide="alert-circle" class="w-3.5 h-3.5"></i>342</span>
+        <span class="flex items-center gap-1"><i data-lucide="clock" class="w-3.5 h-3.5"></i>Updated 2 days ago</span>
+        <span class="badge badge-gray text-xs">MIT License</span>
+      </div>
+      <div class="flex gap-2 mt-4 pt-4 border-t border-[#ECE8FF]">
+        <button onclick="navigateTo('repository-details')" class="btn-outline text-xs flex items-center gap-1.5"><i data-lucide="eye" class="w-3.5 h-3.5"></i>View Details</button>
+        <button onclick="navigateTo('analysis')" class="btn-primary text-xs flex items-center gap-1.5"><i data-lucide="activity" class="w-3.5 h-3.5"></i>Analyse Repository</button>
+      </div>
+    </div>
+
+    <div class="card p-6 animate-fadeInUp" style="animation-delay:0.1s">
+      <div class="flex items-start justify-between mb-3">
+        <div>
+          <div class="flex items-center gap-2 mb-1">
+            <i data-lucide="github" class="w-5 h-5 text-[#6B7280]"></i>
+            <h3 class="font-semibold text-[#111827]">tensorflow/tensorflow</h3>
+            <span class="badge badge-yellow text-xs">Moderate</span>
+          </div>
+          <p class="text-sm text-[#6B7280]">An open source machine learning framework for everyone. Production-ready across platforms.</p>
+        </div>
+      </div>
+      <div class="flex flex-wrap items-center gap-4 text-xs text-[#6B7280] mt-3">
+        <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-yellow-500"></span>Python</span>
+        <span class="flex items-center gap-1"><i data-lucide="star" class="w-3.5 h-3.5"></i>185.6k</span>
+        <span class="flex items-center gap-1"><i data-lucide="git-branch" class="w-3.5 h-3.5"></i>74.2k</span>
+        <span class="flex items-center gap-1"><i data-lucide="alert-circle" class="w-3.5 h-3.5"></i>1.2k</span>
+        <span class="flex items-center gap-1"><i data-lucide="clock" class="w-3.5 h-3.5"></i>Updated 5 days ago</span>
+        <span class="badge badge-gray text-xs">Apache 2.0</span>
+      </div>
+      <div class="flex gap-2 mt-4 pt-4 border-t border-[#ECE8FF]">
+        <button onclick="navigateTo('repository-details')" class="btn-outline text-xs flex items-center gap-1.5"><i data-lucide="eye" class="w-3.5 h-3.5"></i>View Details</button>
+        <button class="btn-primary text-xs flex items-center gap-1.5"><i data-lucide="activity" class="w-3.5 h-3.5"></i>Analyse Repository</button>
+      </div>
+    </div>
+
+    <div class="card p-6 animate-fadeInUp" style="animation-delay:0.2s">
+      <div class="flex items-start justify-between mb-3">
+        <div>
+          <div class="flex items-center gap-2 mb-1">
+            <i data-lucide="github" class="w-5 h-5 text-[#6B7280]"></i>
+            <h3 class="font-semibold text-[#111827]">facebook/react</h3>
+            <span class="badge badge-green text-xs">Healthy</span>
+          </div>
+          <p class="text-sm text-[#6B7280]">A declarative, efficient, and flexible JavaScript library for building user interfaces.</p>
+        </div>
+      </div>
+      <div class="flex flex-wrap items-center gap-4 text-xs text-[#6B7280] mt-3">
+        <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-blue-500"></span>JavaScript</span>
+        <span class="flex items-center gap-1"><i data-lucide="star" class="w-3.5 h-3.5"></i>230.1k</span>
+        <span class="flex items-center gap-1"><i data-lucide="git-branch" class="w-3.5 h-3.5"></i>47.5k</span>
+        <span class="flex items-center gap-1"><i data-lucide="alert-circle" class="w-3.5 h-3.5"></i>521</span>
+        <span class="flex items-center gap-1"><i data-lucide="clock" class="w-3.5 h-3.5"></i>Updated 1 week ago</span>
+        <span class="badge badge-gray text-xs">MIT License</span>
+      </div>
+      <div class="flex gap-2 mt-4 pt-4 border-t border-[#ECE8FF]">
+        <button onclick="navigateTo('repository-details')" class="btn-outline text-xs flex items-center gap-1.5"><i data-lucide="eye" class="w-3.5 h-3.5"></i>View Details</button>
+        <button class="btn-primary text-xs flex items-center gap-1.5"><i data-lucide="activity" class="w-3.5 h-3.5"></i>Analyse Repository</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- REPOSITORY DETAILS PAGE -->
+<div id="page-repository-details" class="page">
+  <div class="mb-6">
+    <button onclick="navigateTo('repositories')" class="btn-ghost flex items-center gap-1.5 text-sm mb-3"><i data-lucide="arrow-left" class="w-4 h-4"></i> Back to Repositories</button>
+    <div class="flex items-center gap-3 mb-2">
+      <i data-lucide="github" class="w-6 h-6 text-[#6B7280]"></i>
+      <h2 class="text-xl font-bold text-[#111827]">vercel/next.js</h2>
+      <span class="badge badge-green">Healthy</span>
+    </div>
+    <p class="text-sm text-[#6B7280]">The React framework for production with hybrid static & server rendering, TypeScript support, and more.</p>
+    <div class="flex flex-wrap gap-4 mt-3 text-xs text-[#6B7280]">
+      <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-blue-500"></span>TypeScript</span>
+      <span class="flex items-center gap-1"><i data-lucide="star" class="w-3.5 h-3.5"></i>124.5k</span>
+      <span class="flex items-center gap-1"><i data-lucide="git-branch" class="w-3.5 h-3.5"></i>26.1k</span>
+      <span class="flex items-center gap-1"><i data-lucide="alert-circle" class="w-3.5 h-3.5"></i>342</span>
+      <span class="flex items-center gap-1"><i data-lucide="clock" class="w-3.5 h-3.5"></i>2 days ago</span>
+      <span class="badge badge-gray">MIT License</span>
+    </div>
+  </div>
+  <!-- Tabs -->
+  <div class="flex gap-1 bg-[#F3F4F6] p-1 rounded-xl mb-6 overflow-x-auto">
+    <button class="tab-btn active" onclick="switchRepoTab('overview', this)">Overview</button>
+    <button class="tab-btn" onclick="switchRepoTab('readme', this)">README</button>
+    <button class="tab-btn" onclick="switchRepoTab('issues', this)">Issues</button>
+    <button class="tab-btn" onclick="switchRepoTab('contributors', this)">Contributors</button>
+    <button class="tab-btn" onclick="switchRepoTab('languages', this)">Languages</button>
+    <button class="tab-btn" onclick="switchRepoTab('activity', this)">Activity</button>
+  </div>
+  <!-- Tab Content -->
+  <div id="repo-overview" class="tab-content active">
+    <div class="card p-6">
+      <h3 class="text-base font-semibold mb-4">Repository Overview</h3>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+        <div class="p-4 rounded-xl bg-[#FAFAFC]"><p class="text-xs text-[#6B7280]">Stars</p><p class="text-lg font-bold text-[#111827]">124.5k</p></div>
+        <div class="p-4 rounded-xl bg-[#FAFAFC]"><p class="text-xs text-[#6B7280]">Forks</p><p class="text-lg font-bold text-[#111827]">26.1k</p></div>
+        <div class="p-4 rounded-xl bg-[#FAFAFC]"><p class="text-xs text-[#6B7280]">Open Issues</p><p class="text-lg font-bold text-[#F59E0B]">342</p></div>
+        <div class="p-4 rounded-xl bg-[#FAFAFC]"><p class="text-xs text-[#6B7280]">License</p><p class="text-lg font-bold text-[#111827]">MIT</p></div>
+      </div>
+      <p class="text-sm text-[#6B7280] leading-relaxed">Next.js is a React framework for building full-stack web applications. You use React Components to build user interfaces, and Next.js for additional features and optimizations. Under the hood, Next.js also abstracts and automatically configures tooling needed for React, like bundling, compiling, and more.</p>
+    </div>
+  </div>
+  <div id="repo-readme" class="tab-content">
+    <div class="card p-6">
+      <div class="prose prose-sm max-w-none text-[#6B7280]">
+        <h3 class="text-base font-semibold text-[#111827]">Getting Started</h3>
+        <p>To create a new Next.js app, run:</p>
+        <pre class="p-3 rounded-lg bg-[#111827] text-green-400 text-xs mt-2">npx create-next-app@latest</pre>
+        <h3 class="text-base font-semibold text-[#111827] mt-4">Features</h3>
+        <ul class="list-disc pl-4 space-y-1 mt-2"><li>File-based routing</li><li>API routes</li><li>Server-side rendering</li><li>Static site generation</li></ul>
+      </div>
+    </div>
+  </div>
+  <div id="repo-issues" class="tab-content">
+    <div class="card p-6">
+      <h3 class="text-base font-semibold mb-4">Open Issues</h3>
+      <div class="space-y-2">
+        <div class="flex items-center gap-3 p-3 rounded-xl hover:bg-[#FAFAFC]"><span class="w-2 h-2 rounded-full bg-[#22C55E]"></span><span class="text-sm">Fix hydration mismatch in concurrent mode</span><span class="text-xs text-[#6B7280] ml-auto">opened 2h ago</span></div>
+        <div class="flex items-center gap-3 p-3 rounded-xl hover:bg-[#FAFAFC]"><span class="w-2 h-2 rounded-full bg-[#F59E0B]"></span><span class="text-sm">Middleware not working with dynamic routes</span><span class="text-xs text-[#6B7280] ml-auto">opened 1d ago</span></div>
+      </div>
+    </div>
+  </div>
+  <div id="repo-contributors" class="tab-content">
+    <div class="card p-6">
+      <h3 class="text-base font-semibold mb-4">Top Contributors</h3>
+      <div class="space-y-2">
+        <div class="flex items-center gap-3 p-3 rounded-xl hover:bg-[#FAFAFC]"><div class="w-8 h-8 rounded-full bg-[#8B5CF6]/20 flex items-center justify-center text-[#8B5CF6] text-xs font-bold">S</div><span class="text-sm font-medium">sokra</span><span class="text-xs text-[#6B7280] ml-auto">2,342 commits</span></div>
+        <div class="flex items-center gap-3 p-3 rounded-xl hover:bg-[#FAFAFC]"><div class="w-8 h-8 rounded-full bg-[#22C55E]/20 flex items-center justify-center text-[#22C55E] text-xs font-bold">L</div><span class="text-sm font-medium">leerob</span><span class="text-xs text-[#6B7280] ml-auto">1,876 commits</span></div>
+      </div>
+    </div>
+  </div>
+  <div id="repo-languages" class="tab-content">
+    <div class="card p-6">
+      <h3 class="text-base font-semibold mb-4">Languages</h3>
+      <div class="space-y-2">
+        <div><div class="flex justify-between text-sm mb-1"><span class="flex items-center gap-2"><span class="w-3 h-3 rounded-sm bg-blue-500"></span>TypeScript</span><span>72%</span></div><div class="progress-bar"><div class="progress-fill" style="width:72%"></div></div></div>
+        <div><div class="flex justify-between text-sm mb-1"><span class="flex items-center gap-2"><span class="w-3 h-3 rounded-sm bg-yellow-500"></span>JavaScript</span><span>18%</span></div><div class="progress-bar"><div class="progress-fill" style="width:18%"></div></div></div>
+        <div><div class="flex justify-between text-sm mb-1"><span class="flex items-center gap-2"><span class="w-3 h-3 rounded-sm bg-green-500"></span>CSS</span><span>10%</span></div><div class="progress-bar"><div class="progress-fill" style="width:10%"></div></div></div>
+      </div>
+    </div>
+  </div>
+  <div id="repo-activity" class="tab-content">
+    <div class="card p-6">
+      <h3 class="text-base font-semibold mb-4">Recent Activity</h3>
+      <div class="space-y-3">
+        <div class="flex items-center gap-3 text-sm"><i data-lucide="git-commit" class="w-4 h-4 text-[#6B7280]"></i><span class="text-[#6B7280]">feat: add support for React 19</span><span class="text-xs text-[#9CA3AF] ml-auto">2h ago</span></div>
+        <div class="flex items-center gap-3 text-sm"><i data-lucide="git-merge" class="w-4 h-4 text-[#6B7280]"></i><span class="text-[#6B7280]">Merge pull request #28543</span><span class="text-xs text-[#9CA3AF] ml-auto">5h ago</span></div>
+      </div>
+    </div>
+  </div>
+  <button onclick="navigateTo('analysis'); showToast('Repository selected for analysis')" class="btn-primary mt-6 flex items-center gap-2"><i data-lucide="check" class="w-4 h-4"></i> Confirm Selection</button>
+</div>
+<!-- ANALYSIS PAGE -->
+<div id="page-analysis" class="page">
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+    <!-- Agents Pipeline -->
+    <div class="lg:col-span-2">
+      <div class="card p-6">
+        <div class="flex items-center justify-between mb-5">
+          <h3 class="text-base font-semibold text-[#111827]">Multi-Agent Analysis Pipeline</h3>
+          <div class="flex items-center gap-2 text-sm">
+            <span id="analysisProgress" class="text-[#8B5CF6] font-semibold">0%</span>
+            <span class="text-[#6B7280]">•</span>
+            <span id="analysisTime" class="text-[#6B7280]">~45s remaining</span>
+          </div>
+        </div>
+        <div class="space-y-3" id="agentList">
+          <div class="agent-node" data-agent="0">
+            <div class="w-8 h-8 rounded-lg bg-[#8B5CF6]/10 flex items-center justify-center flex-shrink-0">
+              <i data-lucide="book-open" class="w-4 h-4 text-[#8B5CF6]"></i>
+            </div>
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center gap-2">
+                <p class="text-sm font-medium text-[#111827]">Repository Reader</p>
+                <span class="agent-status text-xs"></span>
+              </div>
+              <p class="text-xs text-[#6B7280] mt-0.5">Cloning and reading repository structure</p>
+            </div>
+            <div class="agent-loader w-5 h-5"></div>
+          </div>
+          <div class="agent-node pending" data-agent="1">
+            <div class="w-8 h-8 rounded-lg bg-[#F59E0B]/10 flex items-center justify-center flex-shrink-0">
+              <i data-lucide="file-text" class="w-4 h-4 text-[#F59E0B]"></i>
+            </div>
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center gap-2">
+                <p class="text-sm font-medium text-[#111827]">Documentation Agent</p>
+                <span class="agent-status text-xs"></span>
+              </div>
+              <p class="text-xs text-[#6B7280] mt-0.5">Analyzing documentation quality and coverage</p>
+            </div>
+            <div class="agent-loader w-5 h-5"></div>
+          </div>
+          <div class="agent-node pending" data-agent="2">
+            <div class="w-8 h-8 rounded-lg bg-[#22C55E]/10 flex items-center justify-center flex-shrink-0">
+              <i data-lucide="activity" class="w-4 h-4 text-[#22C55E]"></i>
+            </div>
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center gap-2">
+                <p class="text-sm font-medium text-[#111827]">Code Health Agent</p>
+                <span class="agent-status text-xs"></span>
+              </div>
+              <p class="text-xs text-[#6B7280] mt-0.5">Assessing code quality and technical debt</p>
+            </div>
+            <div class="agent-loader w-5 h-5"></div>
+          </div>
+          <div class="agent-node pending" data-agent="3">
+            <div class="w-8 h-8 rounded-lg bg-[#3B82F6]/10 flex items-center justify-center flex-shrink-0">
+              <i data-lucide="trending-up" class="w-4 h-4 text-[#3B82F6]"></i>
+            </div>
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center gap-2">
+                <p class="text-sm font-medium text-[#111827]">Trend Prediction Agent</p>
+                <span class="agent-status text-xs"></span>
+              </div>
+              <p class="text-xs text-[#6B7280] mt-0.5">Predicting technology and market trends</p>
+            </div>
+            <div class="agent-loader w-5 h-5"></div>
+          </div>
+          <div class="agent-node pending" data-agent="4">
+            <div class="w-8 h-8 rounded-lg bg-[#EF4444]/10 flex items-center justify-center flex-shrink-0">
+              <i data-lucide="cpu" class="w-4 h-4 text-[#EF4444]"></i>
+            </div>
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center gap-2">
+                <p class="text-sm font-medium text-[#111827]">AI Capability Agent</p>
+                <span class="agent-status text-xs"></span>
+              </div>
+              <p class="text-xs text-[#6B7280] mt-0.5">Estimating AI vs human contribution ratio</p>
+            </div>
+            <div class="agent-loader w-5 h-5"></div>
+          </div>
+          <div class="agent-node pending" data-agent="5">
+            <div class="w-8 h-8 rounded-lg bg-[#8B5CF6]/10 flex items-center justify-center flex-shrink-0">
+              <i data-lucide="target" class="w-4 h-4 text-[#8B5CF6]"></i>
+            </div>
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center gap-2">
+                <p class="text-sm font-medium text-[#111827]">Skill Gap Agent</p>
+                <span class="agent-status text-xs"></span>
+              </div>
+              <p class="text-xs text-[#6B7280] mt-0.5">Identifying required skills and gaps</p>
+            </div>
+            <div class="agent-loader w-5 h-5"></div>
+          </div>
+        </div>
+        <!-- Start button -->
+        <button id="startAnalysisBtn" onclick="startAnalysis()" class="btn-primary w-full mt-5 flex items-center justify-center gap-2">
+          <i data-lucide="play" class="w-4 h-4"></i>
+          Start Analysis
+        </button>
+      </div>
+    </div>
+
+    <!-- Right sidebar: Circular progress + Logs -->
+    <div class="space-y-6">
+      <div class="card p-6">
+        <h3 class="text-base font-semibold text-[#111827] mb-4">Overall Progress</h3>
+        <div class="flex flex-col items-center">
+          <div class="relative w-32 h-32 mb-4">
+            <svg class="w-32 h-32 -rotate-90" viewBox="0 0 128 128">
+              <circle cx="64" cy="64" r="56" fill="none" stroke="#F3F4F6" stroke-width="8" />
+              <circle id="progressCircle" cx="64" cy="64" r="56" fill="none" stroke="#8B5CF6" stroke-width="8" stroke-linecap="round" stroke-dasharray="351.858" stroke-dashoffset="351.858" />
+            </svg>
+            <div class="absolute inset-0 flex items-center justify-center">
+              <span id="overallProgress" class="text-2xl font-bold text-[#111827]">0%</span>
+            </div>
+          </div>
+          <p id="overallStatus" class="text-sm text-[#6B7280]">Ready to start</p>
+        </div>
+      </div>
+
+      <div class="card p-6">
+        <h3 class="text-base font-semibold text-[#111827] mb-3">Live Logs</h3>
+        <div id="liveLogs" class="h-48 overflow-y-auto bg-[#111827] rounded-xl p-4 font-mono text-xs space-y-2">
+          <div class="text-[#6B7280]">[System] Analysis pipeline initialized. Waiting for start...</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- REVIVAL REPORT PAGE -->
+<div id="page-revival-report" class="page">
+  <div class="mb-6">
+    <button onclick="navigateTo('analysis')" class="btn-ghost flex items-center gap-1.5 text-sm mb-3"><i data-lucide="arrow-left" class="w-4 h-4"></i> Back to Analysis</button>
+    <div class="flex items-center justify-between">
+      <div>
+        <h2 class="text-xl font-bold text-[#111827]">Project Revival Report</h2>
+        <p class="text-sm text-[#6B7280]">vercel/next.js • Generated March 15, 2026</p>
+      </div>
+      <button onclick="showToast('Downloading PDF...')" class="btn-primary flex items-center gap-2"><i data-lucide="download" class="w-4 h-4"></i> Download PDF</button>
+    </div>
+  </div>
+  <!-- Executive Summary -->
+  <div class="card p-6 mb-6">
+    <h3 class="text-base font-semibold text-[#111827] mb-3">Executive Summary</h3>
+    <p class="text-sm text-[#6B7280] leading-relaxed">Next.js is a mature, actively maintained React framework with strong community backing from Vercel. The repository shows excellent health metrics with regular updates, comprehensive documentation, and a large contributor base. High revival potential with clear market demand.</p>
+    <div class="flex flex-wrap gap-4 mt-4">
+      <div class="flex items-center gap-2"><span class="badge badge-green text-xs px-3 py-1.5">Revival Score: 85%</span></div>
+      <div class="flex items-center gap-2"><span class="badge badge-yellow text-xs px-3 py-1.5">Risk Score: 23%</span></div>
+    </div>
+  </div>
+  <!-- Metrics Grid -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+    <div class="card p-6">
+      <h3 class="text-base font-semibold text-[#111827] mb-4">Repository Health</h3>
+      <div class="space-y-3">
+        <div><div class="flex justify-between text-sm mb-1"><span>Code Quality</span><span class="font-medium">92%</span></div><div class="progress-bar"><div class="progress-fill" style="width:92%;background:var(--primary)"></div></div></div>
+        <div><div class="flex justify-between text-sm mb-1"><span>Documentation</span><span class="font-medium">88%</span></div><div class="progress-bar"><div class="progress-fill" style="width:88%;background:var(--success)"></div></div></div>
+        <div><div class="flex justify-between text-sm mb-1"><span>Test Coverage</span><span class="font-medium">76%</span></div><div class="progress-bar"><div class="progress-fill" style="width:76%;background:var(--primary)"></div></div></div>
+        <div><div class="flex justify-between text-sm mb-1"><span>Community Activity</span><span class="font-medium">95%</span></div><div class="progress-bar"><div class="progress-fill" style="width:95%;background:var(--success)"></div></div></div>
+      </div>
+    </div>
+    <div class="card p-6">
+      <h3 class="text-base font-semibold text-[#111827] mb-4">AI vs Human Contribution</h3>
+      <div class="flex items-center justify-center gap-8 py-4">
+        <div class="text-center">
+          <div class="relative w-24 h-24 mx-auto mb-2">
+            <svg class="w-24 h-24 -rotate-90" viewBox="0 0 96 96"><circle cx="48" cy="48" r="40" fill="none" stroke="#F3F4F6" stroke-width="8"/><circle cx="48" cy="48" r="40" fill="none" stroke="#8B5CF6" stroke-width="8" stroke-linecap="round" stroke-dasharray="251.327" stroke-dashoffset="75.398"/></svg>
+            <div class="absolute inset-0 flex items-center justify-center"><span class="text-lg font-bold text-[#111827]">70%</span></div>
+          </div>
+          <p class="text-xs text-[#6B7280]">Human</p>
+        </div>
+        <div class="text-center">
+          <div class="relative w-24 h-24 mx-auto mb-2">
+            <svg class="w-24 h-24 -rotate-90" viewBox="0 0 96 96"><circle cx="48" cy="48" r="40" fill="none" stroke="#F3F4F6" stroke-width="8"/><circle cx="48" cy="48" r="40" fill="none" stroke="#22C55E" stroke-width="8" stroke-linecap="round" stroke-dasharray="251.327" stroke-dashoffset="175.929"/></svg>
+            <div class="absolute inset-0 flex items-center justify-center"><span class="text-lg font-bold text-[#111827]">30%</span></div>
+          </div>
+          <p class="text-xs text-[#6B7280]">AI</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+    <div class="card p-6">
+      <h3 class="text-base font-semibold text-[#111827] mb-4">Technical Debt</h3>
+      <div class="space-y-3">
+        <div class="flex items-center justify-between p-3 rounded-lg bg-[#FAFAFC]"><span class="text-sm text-[#6B7280]">Critical Issues</span><span class="text-sm font-medium text-[#EF4444]">3</span></div>
+        <div class="flex items-center justify-between p-3 rounded-lg bg-[#FAFAFC]"><span class="text-sm text-[#6B7280]">Major Issues</span><span class="text-sm font-medium text-[#F59E0B]">12</span></div>
+        <div class="flex items-center justify-between p-3 rounded-lg bg-[#FAFAFC]"><span class="text-sm text-[#6B7280]">Minor Issues</span><span class="text-sm font-medium text-[#22C55E]">45</span></div>
+        <div class="flex items-center justify-between p-3 rounded-lg bg-[#FAFAFC]"><span class="text-sm text-[#6B7280]">Code Smells</span><span class="text-sm font-medium text-[#6B7280]">28</span></div>
+      </div>
+    </div>
+    <div class="card p-6">
+      <h3 class="text-base font-semibold text-[#111827] mb-4">Trend Prediction</h3>
+      <div class="space-y-3">
+        <div><div class="flex justify-between text-sm mb-1"><span>Market Demand</span><span class="font-medium">94%</span></div><div class="progress-bar"><div class="progress-fill" style="width:94%;background:var(--primary)"></div></div></div>
+        <div><div class="flex justify-between text-sm mb-1"><span>Technology Relevance</span><span class="font-medium">89%</span></div><div class="progress-bar"><div class="progress-fill" style="width:89%;background:var(--success)"></div></div></div>
+        <div><div class="flex justify-between text-sm mb-1"><span>Growth Potential</span><span class="font-medium">82%</span></div><div class="progress-bar"><div class="progress-fill" style="width:82%;background:var(--primary)"></div></div></div>
+        <div><div class="flex justify-between text-sm mb-1"><span>Competition Level</span><span class="font-medium">65%</span></div><div class="progress-bar"><div class="progress-fill" style="width:65%;background:var(--warning)"></div></div></div>
+      </div>
+    </div>
+  </div>
+  <!-- Required Skills & Missing Features -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+    <div class="card p-6">
+      <h3 class="text-base font-semibold text-[#111827] mb-4">Required Skills</h3>
+      <div class="flex flex-wrap gap-2">
+        <span class="badge badge-purple">TypeScript</span>
+        <span class="badge badge-blue">React</span>
+        <span class="badge badge-green">Node.js</span>
+        <span class="badge badge-purple">Webpack</span>
+        <span class="badge badge-yellow">Rust</span>
+        <span class="badge badge-blue">Testing</span>
+      </div>
+    </div>
+    <div class="card p-6">
+      <h3 class="text-base font-semibold text-[#111827] mb-4">Missing Features</h3>
+      <ul class="space-y-2 text-sm text-[#6B7280]">
+        <li class="flex items-center gap-2"><i data-lucide="x" class="w-4 h-4 text-[#EF4444]"></i>Native mobile support</li>
+        <li class="flex items-center gap-2"><i data-lucide="x" class="w-4 h-4 text-[#EF4444]"></i>Built-in authentication</li>
+        <li class="flex items-center gap-2"><i data-lucide="x" class="w-4 h-4 text-[#EF4444]"></i>Database ORM integration</li>
+      </ul>
+    </div>
+  </div>
+  <!-- Timeline -->
+  <div class="card p-6">
+    <h3 class="text-base font-semibold text-[#111827] mb-4">Revival Timeline</h3>
+    <div class="relative">
+      <div class="absolute left-4 top-0 bottom-0 w-0.5 bg-[#ECE8FF]"></div>
+      <div class="space-y-6">
+        <div class="relative pl-10"><div class="absolute left-2.5 w-3 h-3 rounded-full bg-[#8B5CF6] border-2 border-white"></div><h4 class="text-sm font-semibold text-[#111827]">Phase 1: Assessment</h4><p class="text-xs text-[#6B7280]">Week 1-2 • Code review, architecture analysis, dependency audit</p></div>
+        <div class="relative pl-10"><div class="absolute left-2.5 w-3 h-3 rounded-full bg-[#22C55E] border-2 border-white"></div><h4 class="text-sm font-semibold text-[#111827]">Phase 2: Critical Fixes</h4><p class="text-xs text-[#6B7280]">Week 3-4 • Address security issues, fix critical bugs</p></div>
+        <div class="relative pl-10"><div class="absolute left-2.5 w-3 h-3 rounded-full bg-[#F59E0B] border-2 border-white"></div><h4 class="text-sm font-semibold text-[#111827]">Phase 3: Enhancement</h4><p class="text-xs text-[#6B7280]">Week 5-8 • Add missing features, improve documentation</p></div>
+        <div class="relative pl-10"><div class="absolute left-2.5 w-3 h-3 rounded-full bg-[#8B5CF6] border-2 border-white"></div><h4 class="text-sm font-semibold text-[#111827]">Phase 4: Launch</h4><p class="text-xs text-[#6B7280]">Week 9-10 • Community outreach, marketing, release</p></div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- View Contributors button -->
+  <div class="card p-6">
+    <div class="flex items-center justify-between">
+      <div>
+        <h3 class="text-base font-semibold text-[#111827] mb-1">Ready to Find Contributors?</h3>
+        <p class="text-sm text-[#6B7280]">View AI-recommended contributors for this project and start building your team</p>
+      </div>
+      <button onclick="navigateTo('contributors')" class="btn-primary flex items-center gap-2 flex-shrink-0">
+        <i data-lucide="users" class="w-4 h-4"></i>
+        View Contributors
+      </button>
+    </div>
+  </div>
+</div>
+<!-- CONTRIBUTORS PAGE -->
+<div id="page-contributors" class="page">
+  <div class="flex items-center justify-between mb-6">
+    <p class="text-sm text-[#6B7280]">AI-recommended contributors for <span class="font-medium text-[#111827]">vercel/next.js</span></p>
+  <div class="flex items-center gap-2">
+    <span class="badge badge-purple text-xs">Revival Score: 85%</span>
+    <span class="text-xs text-[#6B7280]">Analysis completed</span>
+  </div>
+    <button onclick="showToast('Finding more contributors...')" class="btn-secondary flex items-center gap-2 text-xs">
+      <i data-lucide="refresh" class="w-4 h-4"></i>
+      Refresh Matches
+    </button>
+  </div>
+  <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
+    <div class="card p-5 animate-fadeInUp">
+      <div class="flex items-start gap-3 mb-4">
+        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-[#8B5CF6] to-[#C4B5FD] flex items-center justify-center text-white text-sm font-bold flex-shrink-0">SK</div>
+        <div class="flex-1 min-w-0">
+          <h4 class="font-semibold text-[#111827]">Sarah Kim</h4>
+          <a class="text-xs text-[#6B7280] flex items-center gap-1 mt-0.5"><i data-lucide="github" class="w-3 h-3"></i>@sarahkim</a>
+        </div>
+        <span class="badge badge-green text-xs">96%</span>
+      </div>
+      <div class="flex flex-wrap gap-1.5 mb-3">
+        <span class="badge badge-purple text-xs">React</span>
+        <span class="badge badge-blue text-xs">TypeScript</span>
+        <span class="badge badge-green text-xs">Node.js</span>
+        <span class="badge badge-gray text-xs">+3</span>
+      </div>
+      <p class="text-xs text-[#6B7280] mb-3">Recent: Next.js, TailwindCSS, Prisma</p>
+      <div class="flex items-center gap-3 text-xs text-[#6B7280] mb-4">
+        <span class="flex items-center gap-1"><i data-lucide="activity" class="w-3 h-3"></i>Activity Score: 92</span>
+        <span class="flex items-center gap-1"><i data-lucide="git-commit" class="w-3 h-3"></i>Match Score: 96%</span>
+      </div>
+      <div class="flex gap-2">
+        <button class="btn-outline flex-1 text-xs">View Profile</button>
+        <button onclick="showOutreach('Sarah Kim', 'vercel/next.js', this)" class="btn-primary flex-1 text-xs">Generate Outreach</button>
+      </div>
+    </div>
+    <div class="card p-5 animate-fadeInUp" style="animation-delay:0.1s">
+      <div class="flex items-start gap-3 mb-4">
+        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-[#22C55E] to-[#34D399] flex items-center justify-center text-white text-sm font-bold flex-shrink-0">MC</div>
+        <div class="flex-1 min-w-0">
+          <h4 class="font-semibold text-[#111827]">Marcus Chen</h4>
+          <a class="text-xs text-[#6B7280] flex items-center gap-1 mt-0.5"><i data-lucide="github" class="w-3 h-3"></i>@marcuschen</a>
+        </div>
+        <span class="badge badge-green text-xs">91%</span>
+      </div>
+      <div class="flex flex-wrap gap-1.5 mb-3">
+        <span class="badge badge-purple text-xs">Python</span>
+        <span class="badge badge-blue text-xs">FastAPI</span>
+        <span class="badge badge-green text-xs">Docker</span>
+        <span class="badge badge-gray text-xs">+5</span>
+      </div>
+      <p class="text-xs text-[#6B7280] mb-3">Recent: PyTorch, PostgreSQL, Redis</p>
+      <div class="flex items-center gap-3 text-xs text-[#6B7280] mb-4">
+        <span class="flex items-center gap-1"><i data-lucide="activity" class="w-3 h-3"></i>Activity: 87</span>
+        <span class="flex items-center gap-1"><i data-lucide="git-commit" class="w-3 h-3"></i>Match Score: 91%</span>
+      </div>
+      <div class="flex gap-2">
+        <button class="btn-outline flex-1 text-xs">View Profile</button>
+        <button onclick="showOutreach('Marcus Chen', 'vercel/next.js', this)" class="btn-primary flex-1 text-xs">Generate Outreach</button>
+      </div>
+    </div>
+    <div class="card p-5 animate-fadeInUp" style="animation-delay:0.2s">
+      <div class="flex items-start gap-3 mb-4">
+        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-[#F59E0B] to-[#FBBF24] flex items-center justify-center text-white text-sm font-bold flex-shrink-0">AL</div>
+        <div class="flex-1 min-w-0">
+          <h4 class="font-semibold text-[#111827]">Aria Liu</h4>
+          <a class="text-xs text-[#6B7280] flex items-center gap-1 mt-0.5"><i data-lucide="github" class="w-3 h-3"></i>@arialiu</a>
+        </div>
+        <span class="badge badge-green text-xs">88%</span>
+      </div>
+      <div class="flex flex-wrap gap-1.5 mb-3">
+        <span class="badge badge-purple text-xs">Rust</span>
+        <span class="badge badge-blue text-xs">Go</span>
+        <span class="badge badge-green text-xs">AWS</span>
+        <span class="badge badge-gray text-xs">+4</span>
+      </div>
+      <p class="text-xs text-[#6B7280] mb-3">Recent: Kubernetes, Terraform, gRPC</p>
+      <div class="flex items-center gap-3 text-xs text-[#6B7280] mb-4">
+        <span class="flex items-center gap-1"><i data-lucide="activity" class="w-3 h-3"></i>Activity: 78</span>
+        <span class="flex items-center gap-1"><i data-lucide="git-commit" class="w-3 h-3"></i>Match Score: 88%</span>
+      </div>
+      <div class="flex gap-2">
+        <button class="btn-outline flex-1 text-xs">View Profile</button>
+        <button onclick="showOutreach('Aria Liu', 'vercel/next.js', this)" class="btn-primary flex-1 text-xs">Generate Outreach</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- OUTREACH PAGE -->
+<div id="page-outreach" class="page">
+  <div class="mb-6">
+    <div class="flex items-center gap-3 mb-2">
+      <h3 class="text-base font-semibold text-[#111827]">Outreach Messages</h3>
+      <span class="badge badge-purple text-xs">3 Drafts</span>
+    </div>
+    <p class="text-sm text-[#6B7280]">AI-generated personalized messages for potential contributors</p>
+  </div>
+  <div class="space-y-4">
+    <div class="card p-5">
+      <div class="flex items-start gap-3 mb-4">
+        <div class="w-9 h-9 rounded-full bg-gradient-to-br from-[#8B5CF6] to-[#C4B5FD] flex items-center justify-center text-white text-xs font-bold flex-shrink-0">SK</div>
+        <div class="flex-1">
+          <div class="flex items-center gap-2 mb-1">
+            <h4 class="font-semibold text-sm text-[#111827]">To: Sarah Kim</h4>
+            <span class="badge badge-green text-xs">Sent</span>
+          </div>
+          <p class="text-xs text-[#6B7280]">AI Code Review Tool • 2 days ago</p>
+        </div>
+        <div class="flex gap-1">
+          <button onclick="showToast('Message copied!')" class="btn-ghost p-1.5"><i data-lucide="copy" class="w-4 h-4"></i></button>
+          <button class="btn-ghost p-1.5"><i data-lucide="eye" class="w-4 h-4"></i></button>
+        </div>
+      </div>
+      <div class="p-4 rounded-xl bg-[#FAFAFC] text-sm text-[#6B7280] leading-relaxed">
+        <p>Hi Sarah! I came across your work on React and TypeScript projects and was really impressed by your contributions to the open source community.</p>
+        <p class="mt-2">We're currently working on an AI-Powered Code Review Tool and your expertise would be invaluable. I'd love to discuss how you might contribute to this project.</p>
+        <p class="mt-2">Would you be interested in a quick call this week?</p>
+        <p class="mt-3 text-[#111827] font-medium">— John</p>
+      </div>
+      <div class="flex gap-2 mt-4">
+        <button onclick="previewOutreachMessage(this)" class="btn-outline text-xs flex items-center gap-1"><i data-lucide="eye" class="w-3 h-3"></i> Preview</button>
+        <button onclick="copyOutreachMessage(this)" class="btn-outline text-xs flex items-center gap-1"><i data-lucide="copy" class="w-3 h-3"></i> Copy</button>
+        <button onclick="sendOutreachMessage(this, 'Sarah Kim')" class="btn-primary text-xs flex items-center gap-1"><i data-lucide="send" class="w-3 h-3"></i> Send</button>
+      </div>
+    </div>
+    <div class="card p-5">
+      <div class="flex items-start gap-3 mb-4">
+        <div class="w-9 h-9 rounded-full bg-gradient-to-br from-[#22C55E] to-[#34D399] flex items-center justify-center text-white text-xs font-bold flex-shrink-0">MC</div>
+        <div class="flex-1">
+          <div class="flex items-center gap-2 mb-1">
+            <h4 class="font-semibold text-sm text-[#111827]">To: Marcus Chen</h4>
+            <span class="badge badge-yellow text-xs">Draft</span>
+          </div>
+          <p class="text-xs text-[#6B7280]">ML Pipeline Builder • Just now</p>
+        </div>
+        <div class="flex gap-1">
+          <button onclick="showToast('Message copied!')" class="btn-ghost p-1.5"><i data-lucide="copy" class="w-4 h-4"></i></button>
+          <button class="btn-ghost p-1.5"><i data-lucide="eye" class="w-4 h-4"></i></button>
+        </div>
+      </div>
+      <div class="p-4 rounded-xl bg-[#FAFAFC] text-sm text-[#6B7280] leading-relaxed">
+        <p>Hi Marcus! Your experience with Python and ML pipelines is exactly what we're looking for.</p>
+        <p class="mt-2">We're building an ML Pipeline Builder and I think you'd be a great fit. Let me know if you're interested!</p>
+        <p class="mt-3 text-[#111827] font-medium">— John</p>
+      </div>
+      <div class="flex gap-2 mt-4">
+        <button onclick="previewOutreachMessage(this)" class="btn-outline text-xs flex items-center gap-1"><i data-lucide="eye" class="w-3 h-3"></i> Preview</button>
+        <button onclick="copyOutreachMessage(this)" class="btn-outline text-xs flex items-center gap-1"><i data-lucide="copy" class="w-3 h-3"></i> Copy</button>
+        <button onclick="sendOutreachMessage(this, 'Marcus Chen')" class="btn-primary text-xs flex items-center gap-1"><i data-lucide="send" class="w-3 h-3"></i> Send</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MESSAGES PAGE -->
+<div id="page-messages" class="page">
+  <div class="flex items-center gap-4 mb-6">
+    <div class="flex-1">
+      <div class="relative">
+        <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280]"></i>
+        <input type="text" placeholder="Search messages..." class="input-field pl-10 py-2.5 text-sm" />
+      </div>
+    </div>
+    <button onclick="showToast('Compose message...')" class="btn-primary flex items-center gap-2 text-sm"><i data-lucide="plus" class="w-4 h-4"></i>Compose</button>
+  </div>
+  <div class="space-y-3">
+    <div class="card p-4 flex items-start gap-3 hover:bg-[#FAFAFC] cursor-pointer transition-colors">
+      <div class="w-10 h-10 rounded-full bg-gradient-to-br from-[#8B5CF6] to-[#C4B5FD] flex items-center justify-center text-white text-sm font-bold flex-shrink-0">SK</div>
+      <div class="flex-1 min-w-0">
+        <div class="flex items-center justify-between">
+          <h4 class="font-semibold text-sm text-[#111827]">Sarah Kim</h4>
+          <span class="text-xs text-[#6B7280]">2h ago</span>
+        </div>
+        <p class="text-xs text-[#6B7280] mt-0.5 truncate">Hi! I'd love to contribute to the AI Code Review Tool project. Count me in!</p>
+      </div>
+      <span class="w-2 h-2 rounded-full bg-[#8B5CF6] flex-shrink-0 mt-1"></span>
+    </div>
+    <div class="card p-4 flex items-start gap-3 hover:bg-[#FAFAFC] cursor-pointer transition-colors">
+      <div class="w-10 h-10 rounded-full bg-gradient-to-br from-[#22C55E] to-[#34D399] flex items-center justify-center text-white text-sm font-bold flex-shrink-0">MC</div>
+      <div class="flex-1 min-w-0">
+        <div class="flex items-center justify-between">
+          <h4 class="font-semibold text-sm text-[#111827]">Marcus Chen</h4>
+          <span class="text-xs text-[#6B7280]">1d ago</span>
+        </div>
+        <p class="text-xs text-[#6B7280] mt-0.5 truncate">Thanks for reaching out! I've reviewed the project and I'm interested.</p>
+      </div>
+      <span class="w-2 h-2 rounded-full bg-[#9CA3AF] flex-shrink-0 mt-1"></span>
+    </div>
+    <div class="card p-4 flex items-start gap-3 hover:bg-[#FAFAFC] cursor-pointer transition-colors">
+      <div class="w-10 h-10 rounded-full bg-gradient-to-br from-[#F59E0B] to-[#FBBF24] flex items-center justify-center text-white text-sm font-bold flex-shrink-0">AL</div>
+      <div class="flex-1 min-w-0">
+        <div class="flex items-center justify-between">
+          <h4 class="font-semibold text-sm text-[#111827]">Aria Liu</h4>
+          <span class="text-xs text-[#6B7280]">3d ago</span>
+        </div>
+        <p class="text-xs text-[#6B7280] mt-0.5 truncate">Interesting project! Tell me more about the technical stack.</p>
+      </div>
+      <span class="w-2 h-2 rounded-full bg-[#9CA3AF] flex-shrink-0 mt-1"></span>
+    </div>
+  </div>
+</div>
+<!-- SETTINGS PAGE -->
+<div id="page-settings" class="page">
+  <div class="max-w-2xl space-y-6">
+    <div class="card p-6">
+      <h3 class="text-base font-semibold text-[#111827] mb-4">Profile Settings</h3>
+      <div class="space-y-4">
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm font-medium text-[#6B7280] mb-1.5">First Name</label>
+            <input type="text" class="input-field" value="John" />
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-[#6B7280] mb-1.5">Last Name</label>
+            <input type="text" class="input-field" value="Doe" />
+          </div>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-[#6B7280] mb-1.5">Email</label>
+          <input type="email" class="input-field" value="demo@secondcommit.io" />
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-[#6B7280] mb-1.5">GitHub Username</label>
+          <input type="text" class="input-field" value="johndoe" />
+        </div>
+        <button onclick="showToast('Settings saved!')" class="btn-primary">Save Changes</button>
+      </div>
+    </div>
+    <div class="card p-6">
+      <h3 class="text-base font-semibold text-[#111827] mb-4">Notifications</h3>
+      <div class="space-y-3">
+        <label class="flex items-center justify-between p-3 rounded-xl hover:bg-[#FAFAFC] cursor-pointer">
+          <div>
+            <p class="text-sm font-medium text-[#111827]">Email Notifications</p>
+            <p class="text-xs text-[#6B7280]">Receive email updates about your projects</p>
+          </div>
+          <input type="checkbox" class="w-4 h-4 rounded border-[#ECE8FF] text-[#8B5CF6]" checked />
+        </label>
+        <label class="flex items-center justify-between p-3 rounded-xl hover:bg-[#FAFAFC] cursor-pointer">
+          <div>
+            <p class="text-sm font-medium text-[#111827]">Analysis Complete</p>
+            <p class="text-xs text-[#6B7280]">Get notified when analysis is done</p>
+          </div>
+          <input type="checkbox" class="w-4 h-4 rounded border-[#ECE8FF] text-[#8B5CF6]" checked />
+        </label>
+        <label class="flex items-center justify-between p-3 rounded-xl hover:bg-[#FAFAFC] cursor-pointer">
+          <div>
+            <p class="text-sm font-medium text-[#111827]">New Contributors</p>
+            <p class="text-xs text-[#6B7280]">When new contributors match your projects</p>
+          </div>
+          <input type="checkbox" class="w-4 h-4 rounded border-[#ECE8FF] text-[#8B5CF6]" checked />
+        </label>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PROFILE PAGE -->
+<div id="page-profile" class="page">
+  <div class="max-w-2xl">
+    <div class="card p-8 text-center mb-6">
+      <div class="w-20 h-20 rounded-full bg-gradient-to-br from-[#8B5CF6] to-[#C4B5FD] flex items-center justify-center text-white text-2xl font-bold mx-auto mb-4">JD</div>
+      <h2 class="text-xl font-bold text-[#111827]">John Doe</h2>
+      <p class="text-sm text-[#6B7280]">demo@secondcommit.io</p>
+      <div class="flex items-center justify-center gap-2 mt-2">
+        <span class="badge badge-purple">Startup Owner</span>
+        <span class="badge badge-gray">Joined Mar 2026</span>
+      </div>
+      <div class="flex justify-center gap-6 mt-6">
+        <div class="text-center">
+          <p class="text-xl font-bold text-[#111827]">12</p>
+          <p class="text-xs text-[#6B7280]">Ideas</p>
+        </div>
+        <div class="text-center">
+          <p class="text-xl font-bold text-[#111827]">8</p>
+          <p class="text-xs text-[#6B7280]">Analyses</p>
+        </div>
+        <div class="text-center">
+          <p class="text-xl font-bold text-[#111827]">6</p>
+          <p class="text-xs text-[#6B7280]">Reports</p>
+        </div>
+        <div class="text-center">
+          <p class="text-xl font-bold text-[#111827]">24</p>
+          <p class="text-xs text-[#6B7280]">Contributors</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- AI REFINEMENT PAGE (hidden by default, shown after idea submit) -->
+<div id="page-ai-refinement" class="page">
+  <div class="max-w-3xl mx-auto space-y-6">
+    <div class="card p-6">
+      <h3 class="text-sm font-medium text-[#6B7280] mb-2">Original Idea</h3>
+      <p id="originalIdeaText" class="text-[#111827]">A tool that uses AI to automatically review and improve code quality in pull requests</p>
+    </div>
+    <!-- Animated processing -->
+    <div id="refinementProcessing" class="flex flex-col items-center py-10">
+      <div class="relative mb-4">
+        <div class="w-16 h-16 rounded-2xl bg-[#8B5CF6]/10 flex items-center justify-center">
+          <i data-lucide="sparkles" class="w-8 h-8 text-[#8B5CF6] animate-spin-slow"></i>
+        </div>
+      </div>
+      <p class="text-lg font-semibold text-[#111827] mb-1">AI is refining your idea...</p>
+      <p class="text-sm text-[#6B7280]">Analyzing market fit and technical feasibility</p>
+      <div class="w-64 mt-4">
+        <div class="progress-bar"><div id="refinementProgress" class="progress-fill" style="width:0%"></div></div>
+      </div>
+    </div>
+    <!-- Refined result (hidden initially) -->
+    <div id="refinementResult" class="space-y-6" style="display:none;">
+      <div class="card p-6 border-[#8B5CF6] border-2">
+        <div class="flex items-center gap-2 mb-4">
+          <i data-lucide="sparkles" class="w-5 h-5 text-[#8B5CF6]"></i>
+          <h3 class="text-lg font-semibold text-[#111827]">Refined Idea</h3>
+        </div>
+        <h4 class="text-xl font-bold text-[#111827] mb-3">AI-Powered Pull Request Reviewer</h4>
+        <p class="text-[#6B7280] leading-relaxed">An intelligent code review assistant that integrates directly with GitHub PRs. Uses advanced ML models to detect bugs, security vulnerabilities, and style issues in real-time. Provides actionable feedback with code suggestions.</p>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+          <div class="p-4 rounded-xl bg-[#22C55E]/5 border border-[#22C55E]/20">
+            <div class="flex items-center gap-2 mb-2">
+              <i data-lucide="plus-circle" class="w-4 h-4 text-[#22C55E]"></i>
+              <span class="text-sm font-semibold text-[#111827]">New Features</span>
+            </div>
+            <ul class="text-sm text-[#6B7280] space-y-1">
+              <li>• Real-time vulnerability scanning</li>
+              <li>• Auto-fix suggestions for common issues</li>
+              <li>• Performance impact analysis</li>
+            </ul>
+          </div>
+          <div class="p-4 rounded-xl bg-[#EF4444]/5 border border-[#EF4444]/20">
+            <div class="flex items-center gap-2 mb-2">
+              <i data-lucide="x-circle" class="w-4 h-4 text-[#EF4444]"></i>
+              <span class="text-sm font-semibold text-[#111827]">Removed Ambiguities</span>
+            </div>
+            <ul class="text-sm text-[#6B7280] space-y-1">
+              <li>• Narrowed scope to GitHub PRs only</li>
+              <li>• Defined supported languages</li>
+              <li>• Clear output format specification</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="mt-6 space-y-4">
+          <div class="p-4 rounded-xl bg-[#FAFAFC]">
+            <h5 class="text-sm font-semibold text-[#111827] mb-2">📊 Business Summary</h5>
+            <p class="text-sm text-[#6B7280]">SaaS product targeting development teams. Potential integrations with GitHub Marketplace. Monetization through team plans and enterprise licensing.</p>
+          </div>
+          <div class="p-4 rounded-xl bg-[#FAFAFC]">
+            <h5 class="text-sm font-semibold text-[#111827] mb-2">🔧 Technical Summary</h5>
+            <p class="text-sm text-[#6B7280]">Node.js/TypeScript backend with GitHub Apps integration. ML models for code analysis. Real-time WebSocket updates. PostgreSQL for storage.</p>
+          </div>
+        </div>
+
+        <div class="flex gap-3 mt-6 pt-4 border-t border-[#ECE8FF]">
+          <button onclick="navigateTo('analysis'); showToast('Idea approved! Starting analysis...')" class="btn-primary flex-1 flex items-center justify-center gap-2">
+            <i data-lucide="check" class="w-4 h-4"></i>
+            Approve & Analyze
+          </button>
+          <button onclick="showToast('Editing mode enabled')" class="btn-secondary flex-1">
+            <i data-lucide="edit" class="w-4 h-4"></i>
+            Edit
+          </button>
+          <button onclick="navigateTo('my-ideas')" class="btn-ghost">
+            Go Back
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- ============================================ -->
+<!-- FREELANCER PAGES -->
+<!-- ============================================ -->
+
+<div id="page-freelancer-dashboard" class="page">
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
+    <div class="stat-card">
+      <div class="flex items-center justify-between mb-3">
+        <div class="w-10 h-10 rounded-xl bg-[#8B5CF6]/10 flex items-center justify-center"><i data-lucide="briefcase" class="w-5 h-5 text-[#8B5CF6]"></i></div>
+        <span class="text-2xl font-bold text-[#111827]">8</span>
+      </div>
+      <p class="text-sm text-[#6B7280]">Projects Matched</p>
+      <span class="text-xs text-[#22C55E]">↑ 2 this week</span>
+    </div>
+    <div class="stat-card">
+      <div class="flex items-center justify-between mb-3">
+        <div class="w-10 h-10 rounded-xl bg-[#F59E0B]/10 flex items-center justify-center"><i data-lucide="mail" class="w-5 h-5 text-[#F59E0B]"></i></div>
+        <span class="text-2xl font-bold text-[#111827]">5</span>
+      </div>
+      <p class="text-sm text-[#6B7280]">Invitations</p>
+      <span class="text-xs text-[#F59E0B]">3 new</span>
+    </div>
+    <div class="stat-card">
+      <div class="flex items-center justify-between mb-3">
+        <div class="w-10 h-10 rounded-xl bg-[#22C55E]/10 flex items-center justify-center"><i data-lucide="check-circle" class="w-5 h-5 text-[#22C55E]"></i></div>
+        <span class="text-2xl font-bold text-[#111827]">4</span>
+      </div>
+      <p class="text-sm text-[#6B7280]">Accepted Projects</p>
+      <span class="text-xs text-[#22C55E]">↑ 1 this month</span>
+    </div>
+    <div class="stat-card">
+      <div class="flex items-center justify-between mb-3">
+        <div class="w-10 h-10 rounded-xl bg-[#8B5CF6]/10 flex items-center justify-center"><i data-lucide="target" class="w-5 h-5 text-[#8B5CF6]"></i></div>
+        <span class="text-2xl font-bold text-[#111827]">85%</span>
+      </div>
+      <p class="text-sm text-[#6B7280]">Skill Match</p>
+      <div class="progress-bar mt-2"><div class="progress-fill" style="width:85%"></div></div>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+    <div class="card p-6">
+      <h3 class="text-base font-semibold text-[#111827] mb-4">Profile Completion</h3>
+      <div class="flex items-center gap-4 mb-4">
+        <div class="relative w-20 h-20 flex-shrink-0">
+          <svg class="w-20 h-20 -rotate-90" viewBox="0 0 80 80"><circle cx="40" cy="40" r="32" fill="none" stroke="#F3F4F6" stroke-width="6"/><circle cx="40" cy="40" r="32" fill="none" stroke="#8B5CF6" stroke-width="6" stroke-linecap="round" stroke-dasharray="201.062" stroke-dashoffset="40.212"/></svg>
+          <div class="absolute inset-0 flex items-center justify-center"><span class="text-sm font-bold text-[#111827]">80%</span></div>
+        </div>
+        <div class="flex-1 space-y-2 text-sm">
+          <div class="flex justify-between"><span class="text-[#6B7280]">GitHub Connected</span><span class="text-[#22C55E]">✓</span></div>
+          <div class="flex justify-between"><span class="text-[#6B7280]">Skills Added</span><span class="text-[#22C55E]">✓</span></div>
+          <div class="flex justify-between"><span class="text-[#6B7280]">Portfolio</span><span class="text-[#F59E0B]">—</span></div>
+          <div class="flex justify-between"><span class="text-[#6B7280]">Bio</span><span class="text-[#F59E0B]">—</span></div>
+        </div>
+      </div>
+      <button onclick="showToast('Complete your profile')" class="btn-primary w-full text-sm">Complete Profile</button>
+    </div>
+    <div class="card p-6">
+      <h3 class="text-base font-semibold text-[#111827] mb-4">My Skills</h3>
+      <div class="flex flex-wrap gap-2">
+        <span class="badge badge-purple">React</span>
+        <span class="badge badge-blue">TypeScript</span>
+        <span class="badge badge-green">Node.js</span>
+        <span class="badge badge-purple">Python</span>
+        <span class="badge badge-yellow">Docker</span>
+        <span class="badge badge-blue">PostgreSQL</span>
+        <span class="badge badge-green">GraphQL</span>
+      </div>
+      <button onclick="showToast('Add more skills')" class="btn-outline w-full mt-4 text-sm">+ Add Skills</button>
+    </div>
+  </div>
+
+  <div class="card p-6">
+    <h3 class="text-base font-semibold text-[#111827] mb-4">Recent Recommendations</h3>
+    <div class="space-y-3">
+      <div class="flex items-start gap-3 p-3 rounded-xl hover:bg-[#FAFAFC] transition-colors">
+        <div class="w-10 h-10 rounded-lg bg-[#8B5CF6]/10 flex items-center justify-center flex-shrink-0"><i data-lucide="code" class="w-5 h-5 text-[#8B5CF6]"></i></div>
+        <div class="flex-1">
+          <h4 class="text-sm font-semibold text-[#111827]">AI-Powered Code Review Tool</h4>
+          <p class="text-xs text-[#6B7280] mt-0.5">Match: 96% • Stack: React, TypeScript, Node.js</p>
+        </div>
+        <button class="btn-primary text-xs">View</button>
+      </div>
+      <div class="flex items-start gap-3 p-3 rounded-xl hover:bg-[#FAFAFC] transition-colors">
+        <div class="w-10 h-10 rounded-lg bg-[#22C55E]/10 flex items-center justify-center flex-shrink-0"><i data-lucide="database" class="w-5 h-5 text-[#22C55E]"></i></div>
+        <div class="flex-1">
+          <h4 class="text-sm font-semibold text-[#111827]">ML Pipeline Builder</h4>
+          <p class="text-xs text-[#6B7280] mt-0.5">Match: 88% • Stack: Python, FastAPI, Docker</p>
+        </div>
+        <button class="btn-primary text-xs">View</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="page-freelancer-skills" class="page">
+  <div class="card p-6">
+    <h3 class="text-base font-semibold text-[#111827] mb-4">My Skills</h3>
+    <div class="flex flex-wrap gap-2 mb-6">
+      <span class="badge badge-purple text-sm px-3 py-1.5">React <span class="ml-1 opacity-70">✕</span></span>
+      <span class="badge badge-blue text-sm px-3 py-1.5">TypeScript <span class="ml-1 opacity-70">✕</span></span>
+      <span class="badge badge-green text-sm px-3 py-1.5">Node.js <span class="ml-1 opacity-70">✕</span></span>
+      <span class="badge badge-purple text-sm px-3 py-1.5">Python <span class="ml-1 opacity-70">✕</span></span>
+    </div>
+    <div class="flex gap-2">
+      <input type="text" class="input-field flex-1" placeholder="Add a skill..." />
+      <button onclick="showToast('Skill added!')" class="btn-primary">Add</button>
+    </div>
+  </div>
+</div>
+
+<div id="page-freelancer-github" class="page">
+  <div class="card p-6">
+    <div class="flex items-center gap-4 mb-6">
+      <div class="w-12 h-12 rounded-full bg-[#111827] flex items-center justify-center"><i data-lucide="github" class="w-6 h-6 text-white"></i></div>
+      <div>
+        <h3 class="font-semibold text-[#111827]">GitHub Integration</h3>
+        <p class="text-sm text-[#6B7280]">Connected as @johndoe</p>
+      </div>
+      <span class="badge badge-green ml-auto">Connected</span>
+    </div>
+    <div class="space-y-3">
+      <div class="flex items-center gap-3 p-3 rounded-xl bg-[#FAFAFC]">
+        <i data-lucide="git-repository" class="w-5 h-5 text-[#6B7280]"></i>
+        <div class="flex-1"><p class="text-sm font-medium text-[#111827]">react-portfolio</p><p class="text-xs text-[#6B7280]">42 contributions in last year</p></div>
+        <span class="text-xs text-[#6B7280]">Updated 2d ago</span>
+      </div>
+      <div class="flex items-center gap-3 p-3 rounded-xl bg-[#FAFAFC]">
+        <i data-lucide="git-repository" class="w-5 h-5 text-[#6B7280]"></i>
+        <div class="flex-1"><p class="text-sm font-medium text-[#111827]">api-boilerplate</p><p class="text-xs text-[#6B7280]">28 contributions in last year</p></div>
+        <span class="text-xs text-[#6B7280]">Updated 1w ago</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="page-freelancer-recommendations" class="page">
+  <p class="text-sm text-[#6B7280] mb-6">Projects that match your skills and experience</p>
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+    <div class="card p-5">
+      <h4 class="font-semibold text-[#111827] mb-2">AI-Powered Code Review Tool</h4>
+      <div class="flex gap-1.5 mb-3"><span class="badge badge-purple">React</span><span class="badge badge-blue">TypeScript</span></div>
+      <p class="text-sm text-[#6B7280] mb-3">Need help building the frontend for an AI code review platform.</p>
+      <div class="flex items-center justify-between">
+        <span class="text-sm font-medium text-[#8B5CF6]">96% Match</span>
+        <button class="btn-primary text-xs">Apply</button>
+      </div>
+    </div>
+    <div class="card p-5">
+      <h4 class="font-semibold text-[#111827] mb-2">ML Pipeline Builder</h4>
+      <div class="flex gap-1.5 mb-3"><span class="badge badge-purple">Python</span><span class="badge badge-green">Docker</span></div>
+      <p class="text-sm text-[#6B7280] mb-3">Looking for backend engineers with ML pipeline experience.</p>
+      <div class="flex items-center justify-between">
+        <span class="text-sm font-medium text-[#8B5CF6]">88% Match</span>
+        <button class="btn-primary text-xs">Apply</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="page-freelancer-invitations" class="page">
+  <p class="text-sm text-[#6B7280] mb-6">You have 3 pending invitations</p>
+  <div class="space-y-3">
+    <div class="card p-5 flex items-center justify-between">
+      <div>
+        <div class="flex items-center gap-2"><h4 class="font-semibold text-sm text-[#111827]">AI Code Review Tool</h4><span class="badge badge-blue text-xs">Startup Owner</span></div>
+        <p class="text-xs text-[#6B7280] mt-1">Invited by John Doe • 2 days ago</p>
+      </div>
+      <div class="flex gap-2"><button class="btn-success text-xs">Accept</button><button class="btn-outline text-xs">Decline</button></div>
+    </div>
+    <div class="card p-5 flex items-center justify-between">
+      <div>
+        <div class="flex items-center gap-2"><h4 class="font-semibold text-sm text-[#111827]">ML Pipeline Builder</h4><span class="badge badge-blue text-xs">Startup Owner</span></div>
+        <p class="text-xs text-[#6B7280] mt-1">Invited by John Doe • 5 days ago</p>
+      </div>
+      <div class="flex gap-2"><button class="btn-success text-xs">Accept</button><button class="btn-outline text-xs">Decline</button></div>
+    </div>
+  </div>
+</div>
+
+<div id="page-freelancer-projects" class="page">
+  <div class="space-y-3">
+    <div class="card p-5">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-[#22C55E]/10 flex items-center justify-center"><i data-lucide="check-circle" class="w-5 h-5 text-[#22C55E]"></i></div>
+        <div class="flex-1">
+          <h4 class="font-semibold text-sm text-[#111827]">OpenAPI Docs Generator</h4>
+          <p class="text-xs text-[#6B7280]">Completed • February 2026</p>
+        </div>
+        <span class="badge badge-green">Completed</span>
+      </div>
+    </div>
+    <div class="card p-5">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-[#F59E0B]/10 flex items-center justify-center"><i data-lucide="clock" class="w-5 h-5 text-[#F59E0B]"></i></div>
+        <div class="flex-1">
+          <h4 class="font-semibold text-sm text-[#111827]">ML Pipeline Builder</h4>
+          <p class="text-xs text-[#6B7280]">In Progress • Started March 2026</p>
+        </div>
+        <span class="badge badge-yellow">In Progress</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="page-freelancer-profile" class="page">
+  <div class="max-w-2xl">
+    <div class="card p-8 text-center">
+      <div class="w-20 h-20 rounded-full bg-gradient-to-br from-[#8B5CF6] to-[#C4B5FD] flex items-center justify-center text-white text-2xl font-bold mx-auto mb-4">JD</div>
+      <h2 class="text-xl font-bold text-[#111827]">John Doe</h2>
+      <p class="text-sm text-[#6B7280]">Full Stack Developer</p>
+      <div class="flex justify-center gap-2 mt-2"><span class="badge badge-purple">Freelancer</span><span class="badge badge-gray">Joined Mar 2026</span></div>
+      <p class="text-sm text-[#6B7280] mt-4 max-w-md mx-auto">Full-stack developer passionate about open source and building tools that help developers be more productive.</p>
+    </div>
+  </div>
+</div>
+<!-- ============================================ -->
+<!-- ADMIN PAGES -->
+<!-- ============================================ -->
+
+<div id="page-admin-dashboard" class="page">
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
+    <div class="stat-card"><div class="flex items-center justify-between mb-2"><div class="w-9 h-9 rounded-xl bg-[#8B5CF6]/10 flex items-center justify-center"><i data-lucide="users" class="w-4 h-4 text-[#8B5CF6]"></i></div><span class="text-xl font-bold text-[#111827]">156</span></div><p class="text-xs text-[#6B7280]">Total Users</p><span class="text-xs text-[#22C55E]">↑ 12 this week</span></div>
+    <div class="stat-card"><div class="flex items-center justify-between mb-2"><div class="w-9 h-9 rounded-xl bg-[#F59E0B]/10 flex items-center justify-center"><i data-lucide="lightbulb" class="w-4 h-4 text-[#F59E0B]"></i></div><span class="text-xl font-bold text-[#111827]">48</span></div><p class="text-xs text-[#6B7280]">Total Ideas</p><span class="text-xs text-[#22C55E]">↑ 8 this week</span></div>
+    <div class="stat-card"><div class="flex items-center justify-between mb-2"><div class="w-9 h-9 rounded-xl bg-[#22C55E]/10 flex items-center justify-center"><i data-lucide="github" class="w-4 h-4 text-[#22C55E]"></i></div><span class="text-xl font-bold text-[#111827]">32</span></div><p class="text-xs text-[#6B7280]">Repositories</p><span class="text-xs text-[#22C55E]">↑ 5 this week</span></div>
+    <div class="stat-card"><div class="flex items-center justify-between mb-2"><div class="w-9 h-9 rounded-xl bg-[#EF4444]/10 flex items-center justify-center"><i data-lucide="file-text" class="w-4 h-4 text-[#EF4444]"></i></div><span class="text-xl font-bold text-[#111827]">24</span></div><p class="text-xs text-[#6B7280]">Reports</p><span class="text-xs text-[#22C55E]">↑ 3 this week</span></div>
+    <div class="stat-card"><div class="flex items-center justify-between mb-2"><div class="w-9 h-9 rounded-xl bg-[#8B5CF6]/10 flex items-center justify-center"><i data-lucide="git-merge" class="w-4 h-4 text-[#8B5CF6]"></i></div><span class="text-xl font-bold text-[#111827]">7</span></div><p class="text-xs text-[#6B7280]">Revived Projects</p><span class="text-xs text-[#22C55E]">↑ 2 this month</span></div>
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+    <div class="card p-6">
+      <h3 class="text-base font-semibold text-[#111827] mb-4">Platform Growth</h3>
+      <div class="space-y-3">
+        <div><div class="flex justify-between text-sm mb-1"><span class="text-[#6B7280]">Startup Owners</span><span class="font-medium">89</span></div><div class="progress-bar"><div class="progress-fill" style="width:57%"></div></div></div>
+        <div><div class="flex justify-between text-sm mb-1"><span class="text-[#6B7280]">Freelancers</span><span class="font-medium">67</span></div><div class="progress-bar"><div class="progress-fill" style="width:43%"></div></div></div>
+        <div><div class="flex justify-between text-sm mb-1"><span class="text-[#6B7280]">Active Projects</span><span class="font-medium">24</span></div><div class="progress-bar"><div class="progress-fill" style="width:75%"></div></div></div>
+      </div>
+    </div>
+    <div class="card p-6">
+      <h3 class="text-base font-semibold text-[#111827] mb-4">Top Technologies</h3>
+      <div class="space-y-2">
+        <div class="flex items-center gap-3"><span class="w-2 h-2 rounded-full bg-[#8B5CF6]"></span><span class="text-sm flex-1">TypeScript</span><span class="text-sm font-medium">24 repos</span></div>
+        <div class="flex items-center gap-3"><span class="w-2 h-2 rounded-full bg-[#22C55E]"></span><span class="text-sm flex-1">Python</span><span class="text-sm font-medium">18 repos</span></div>
+        <div class="flex items-center gap-3"><span class="w-2 h-2 rounded-full bg-[#F59E0B]"></span><span class="text-sm flex-1">JavaScript</span><span class="text-sm font-medium">15 repos</span></div>
+        <div class="flex items-center gap-3"><span class="w-2 h-2 rounded-full bg-[#3B82F6]"></span><span class="text-sm flex-1">Rust</span><span class="text-sm font-medium">9 repos</span></div>
+        <div class="flex items-center gap-3"><span class="w-2 h-2 rounded-full bg-[#EF4444]"></span><span class="text-sm flex-1">Go</span><span class="text-sm font-medium">7 repos</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card p-6">
+    <h3 class="text-base font-semibold text-[#111827] mb-4">Recent Platform Activity</h3>
+    <div class="space-y-3">
+      <div class="flex items-center gap-3 text-sm"><div class="w-2 h-2 rounded-full bg-[#22C55E]"></div><span class="text-[#6B7280]">New user registered:</span><span class="font-medium">alex.chen@email.com</span><span class="text-xs text-[#9CA3AF] ml-auto">12m ago</span></div>
+      <div class="flex items-center gap-3 text-sm"><div class="w-2 h-2 rounded-full bg-[#8B5CF6]"></div><span class="text-[#6B7280]">New idea submitted:</span><span class="font-medium">"AI Code Review"</span><span class="text-xs text-[#9CA3AF] ml-auto">34m ago</span></div>
+      <div class="flex items-center gap-3 text-sm"><div class="w-2 h-2 rounded-full bg-[#F59E0B]"></div><span class="text-[#6B7280]">Analysis completed:</span><span class="font-medium">vercel/next.js</span><span class="text-xs text-[#9CA3AF] ml-auto">1h ago</span></div>
+      <div class="flex items-center gap-3 text-sm"><div class="w-2 h-2 rounded-full bg-[#22C55E]"></div><span class="text-[#6B7280]">Outreach sent:</span><span class="font-medium">3 messages</span><span class="text-xs text-[#9CA3AF] ml-auto">2h ago</span></div>
+    </div>
+  </div>
+</div>
+
+<div id="page-admin-users" class="page">
+  <div class="card p-6">
+    <div class="flex items-center justify-between mb-4">
+      <h3 class="text-base font-semibold text-[#111827]">All Users</h3>
+      <div class="relative"><i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280]"></i><input type="text" placeholder="Search users..." class="input-field pl-10 py-2 text-sm w-64" /></div>
+    </div>
+    <div class="space-y-2">
+      <div class="flex items-center gap-3 p-3 rounded-xl hover:bg-[#FAFAFC]"><div class="w-8 h-8 rounded-full bg-gradient-to-br from-[#8B5CF6] to-[#C4B5FD] flex items-center justify-center text-white text-xs font-bold">JD</div><div class="flex-1"><p class="text-sm font-medium">John Doe</p><p class="text-xs text-[#6B7280]">demo@secondcommit.io</p></div><span class="badge badge-purple text-xs">Startup Owner</span><span class="text-xs text-[#6B7280]">Joined Mar 2026</span></div>
+      <div class="flex items-center gap-3 p-3 rounded-xl hover:bg-[#FAFAFC]"><div class="w-8 h-8 rounded-full bg-gradient-to-br from-[#22C55E] to-[#34D399] flex items-center justify-center text-white text-xs font-bold">SK</div><div class="flex-1"><p class="text-sm font-medium">Sarah Kim</p><p class="text-xs text-[#6B7280]">sarah@email.com</p></div><span class="badge badge-green text-xs">Freelancer</span><span class="text-xs text-[#6B7280]">Joined Feb 2026</span></div>
+      <div class="flex items-center gap-3 p-3 rounded-xl hover:bg-[#FAFAFC]"><div class="w-8 h-8 rounded-full bg-gradient-to-br from-[#F59E0B] to-[#FBBF24] flex items-center justify-center text-white text-xs font-bold">MC</div><div class="flex-1"><p class="text-sm font-medium">Marcus Chen</p><p class="text-xs text-[#6B7280]">marcus@email.com</p></div><span class="badge badge-green text-xs">Freelancer</span><span class="text-xs text-[#6B7280]">Joined Jan 2026</span></div>
+    </div>
+  </div>
+</div>
+
+<div id="page-admin-ideas" class="page">
+  <div class="card p-6">
+    <h3 class="text-base font-semibold text-[#111827] mb-4">All Ideas</h3>
+    <div class="space-y-3">
+      <div class="flex items-center gap-3 p-3 rounded-xl hover:bg-[#FAFAFC]"><div class="w-8 h-8 rounded-lg bg-[#8B5CF6]/10 flex items-center justify-center"><i data-lucide="code" class="w-4 h-4 text-[#8B5CF6]"></i></div><div class="flex-1"><p class="text-sm font-medium">AI-Powered Code Review Tool</p><p class="text-xs text-[#6B7280]">By John Doe</p></div><span class="badge badge-green text-xs">Refined</span><span class="text-xs text-[#6B7280]">2 days ago</span></div>
+      <div class="flex items-center gap-3 p-3 rounded-xl hover:bg-[#FAFAFC]"><div class="w-8 h-8 rounded-lg bg-[#22C55E]/10 flex items-center justify-center"><i data-lucide="database" class="w-4 h-4 text-[#22C55E]"></i></div><div class="flex-1"><p class="text-sm font-medium">ML Pipeline Builder</p><p class="text-xs text-[#6B7280]">By John Doe</p></div><span class="badge badge-purple text-xs">Analysed</span><span class="text-xs text-[#6B7280]">5 days ago</span></div>
+    </div>
+  </div>
+</div>
+
+<div id="page-admin-repositories" class="page">
+  <div class="card p-6">
+    <h3 class="text-base font-semibold text-[#111827] mb-4">All Repositories</h3>
+    <div class="space-y-3">
+      <div class="flex items-center gap-3 p-3 rounded-xl hover:bg-[#FAFAFC]"><i data-lucide="github" class="w-5 h-5 text-[#6B7280]"></i><div class="flex-1"><p class="text-sm font-medium">vercel/next.js</p><p class="text-xs text-[#6B7280]">TypeScript • 124.5k stars</p></div><span class="badge badge-green">Healthy</span></div>
+      <div class="flex items-center gap-3 p-3 rounded-xl hover:bg-[#FAFAFC]"><i data-lucide="github" class="w-5 h-5 text-[#6B7280]"></i><div class="flex-1"><p class="text-sm font-medium">tensorflow/tensorflow</p><p class="text-xs text-[#6B7280]">Python • 185.6k stars</p></div><span class="badge badge-yellow">Moderate</span></div>
+    </div>
+  </div>
+</div>
+
+<div id="page-admin-analytics" class="page">
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <div class="card p-6">
+      <h3 class="text-base font-semibold text-[#111827] mb-4">Most Requested Skills</h3>
+      <div class="space-y-2">
+        <div class="flex items-center gap-3"><span class="text-sm flex-1">TypeScript</span><div class="w-32 h-2 bg-[#F3F4F6] rounded-full"><div class="h-full rounded-full bg-[#8B5CF6]" style="width:92%"></div></div><span class="text-sm font-medium w-8 text-right">92%</span></div>
+        <div class="flex items-center gap-3"><span class="text-sm flex-1">React</span><div class="w-32 h-2 bg-[#F3F4F6] rounded-full"><div class="h-full rounded-full bg-[#22C55E]" style="width:85%"></div></div><span class="text-sm font-medium w-8 text-right">85%</span></div>
+        <div class="flex items-center gap-3"><span class="text-sm flex-1">Python</span><div class="w-32 h-2 bg-[#F3F4F6] rounded-full"><div class="h-full rounded-full bg-[#F59E0B]" style="width:78%"></div></div><span class="text-sm font-medium w-8 text-right">78%</span></div>
+        <div class="flex items-center gap-3"><span class="text-sm flex-1">Node.js</span><div class="w-32 h-2 bg-[#F3F4F6] rounded-full"><div class="h-full rounded-full bg-[#3B82F6]" style="width:71%"></div></div><span class="text-sm font-medium w-8 text-right">71%</span></div>
+      </div>
+    </div>
+    <div class="card p-6">
+      <h3 class="text-base font-semibold text-[#111827] mb-4">Weekly Activity</h3>
+      <div class="flex items-end gap-2 h-32">
+        <div class="flex-1 flex flex-col items-center gap-1"><div class="w-full bg-[#8B5CF6]/20 rounded-t-lg" style="height:40%"></div><span class="text-xs text-[#6B7280]">Mon</span></div>
+        <div class="flex-1 flex flex-col items-center gap-1"><div class="w-full bg-[#8B5CF6]/20 rounded-t-lg" style="height:60%"></div><span class="text-xs text-[#6B7280]">Tue</span></div>
+        <div class="flex-1 flex flex-col items-center gap-1"><div class="w-full bg-[#8B5CF6]/20 rounded-t-lg" style="height:45%"></div><span class="text-xs text-[#6B7280]">Wed</span></div>
+        <div class="flex-1 flex flex-col items-center gap-1"><div class="w-full bg-[#8B5CF6]/30 rounded-t-lg" style="height:75%"></div><span class="text-xs text-[#6B7280]">Thu</span></div>
+        <div class="flex-1 flex flex-col items-center gap-1"><div class="w-full bg-[#8B5CF6]/30 rounded-t-lg" style="height:90%"></div><span class="text-xs text-[#6B7280]">Fri</span></div>
+        <div class="flex-1 flex flex-col items-center gap-1"><div class="w-full bg-[#8B5CF6]/10 rounded-t-lg" style="height:25%"></div><span class="text-xs text-[#6B7280]">Sat</span></div>
+        <div class="flex-1 flex flex-col items-center gap-1"><div class="w-full bg-[#8B5CF6]/10 rounded-t-lg" style="height:30%"></div><span class="text-xs text-[#6B7280]">Sun</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="page-admin-reports" class="page">
+  <div class="card p-6">
+    <h3 class="text-base font-semibold text-[#111827] mb-4">Generated Reports</h3>
+    <div class="space-y-3">
+      <div class="flex items-center gap-3 p-3 rounded-xl hover:bg-[#FAFAFC]"><i data-lucide="file-text" class="w-5 h-5 text-[#8B5CF6]"></i><div class="flex-1"><p class="text-sm font-medium">AI Code Review Tool - Revival Report</p><p class="text-xs text-[#6B7280]">Generated 2 days ago • Score: 78%</p></div><button onclick="showToast('Downloading PDF...')" class="btn-outline text-xs"><i data-lucide="download" class="w-3 h-3"></i> PDF</button></div>
+      <div class="flex items-center gap-3 p-3 rounded-xl hover:bg-[#FAFAFC]"><i data-lucide="file-text" class="w-5 h-5 text-[#22C55E]"></i><div class="flex-1"><p class="text-sm font-medium">ML Pipeline Builder - Revival Report</p><p class="text-xs text-[#6B7280]">Generated 5 days ago • Score: 82%</p></div><button onclick="showToast('Downloading PDF...')" class="btn-outline text-xs"><i data-lucide="download" class="w-3 h-3"></i> PDF</button></div>
+    </div>
+  </div>
+</div>
+
+<div id="page-admin-activity" class="page">
+  <div class="card p-6">
+    <h3 class="text-base font-semibold text-[#111827] mb-4">Activity Log</h3>
+    <div class="space-y-4">
+      <div class="flex items-start gap-3"><div class="w-2 h-2 rounded-full bg-[#22C55E] mt-2"></div><div><p class="text-sm font-medium text-[#111827]">New user registration</p><p class="text-xs text-[#6B7280]">alex.chen@email.com signed up as Freelancer</p><p class="text-xs text-[#9CA3AF] mt-0.5">12 minutes ago</p></div></div>
+      <div class="flex items-start gap-3"><div class="w-2 h-2 rounded-full bg-[#8B5CF6] mt-2"></div><div><p class="text-sm font-medium text-[#111827]">Idea submitted for analysis</p><p class="text-xs text-[#6B7280]">"AI Code Review" by John Doe</p><p class="text-xs text-[#9CA3AF] mt-0.5">34 minutes ago</p></div></div>
+      <div class="flex items-start gap-3"><div class="w-2 h-2 rounded-full bg-[#F59E0B] mt-2"></div><div><p class="text-sm font-medium text-[#111827]">Analysis pipeline completed</p><p class="text-xs text-[#6B7280]">Repository: vercel/next.js</p><p class="text-xs text-[#9CA3AF] mt-0.5">1 hour ago</p></div></div>
+    </div>
+  </div>
+</div>
+    </div><!-- End page content -->
+  </div><!-- End main area -->
+
+  <!-- Role Switcher (demo) -->
+  <div class="role-switcher" id="roleSwitcher">
+    <span class="text-xs text-[#6B7280] font-medium hidden sm:inline">Role:</span>
+    <button class="role-btn active" data-role="startup-owner" onclick="switchRole('startup-owner')">Startup Owner</button>
+    <button class="role-btn" data-role="freelancer" onclick="switchRole('freelancer')">Freelancer</button>
+    <button class="role-btn" data-role="admin" onclick="switchRole('admin')">Admin</button>
+  </div>
+</div><!-- End appMain -->
+
+<script>
+  // ============================================
+  // GLOBALS
+  // ============================================
+  let currentRole = 'startup-owner';
+  let currentPage = 'dashboard';
+  let analysisRunning = false;
+  let isRecording = false;
+
+  // ============================================
+  // DARK MODE
+  // ============================================
+  let isDarkMode = false;
+
+  function initDarkMode() {
+    const saved = localStorage.getItem('secondcommit-darkmode');
+    if (saved === 'true') {
+      isDarkMode = true;
+      document.documentElement.setAttribute('data-theme', 'dark');
+      const icon = document.querySelector('#darkModeToggle i');
+      if (icon) {
+        icon.setAttribute('data-lucide', 'sun');
+        setTimeout(() => { if (typeof lucide !== "undefined") lucide.createIcons() }, 10);
+      }
+    }
+  }
+
+  function toggleDarkMode() {
+    isDarkMode = !isDarkMode;
+    document.documentElement.setAttribute('data-theme', isDarkMode ? 'dark' : '');
+    localStorage.setItem('secondcommit-darkmode', isDarkMode);
+    const icon = document.querySelector('#darkModeToggle i');
+    if (icon) {
+      icon.setAttribute('data-lucide', isDarkMode ? 'sun' : 'moon');
+      setTimeout(() => { try { if (typeof lucide !== "undefined") lucide.createIcons(); } catch(e) {} }, 10);
+    }
+    showToast(isDarkMode ? 'Dark mode enabled' : 'Light mode enabled');
+  }
+
+
+  // ============================================
+  // LOGIN / LOGOUT
+  // ============================================
+  function handleLogin() {
+    const loginScreen = document.getElementById('loginScreen');
+    const appMain = document.getElementById('appMain');
+    loginScreen.style.display = 'none';
+    appMain.style.display = 'block';
+    showToast('Welcome back, John!');
+    navigateTo('dashboard');
+  }
+
+  function handleLogout() {
+    const loginScreen = document.getElementById('loginScreen');
+    const appMain = document.getElementById('appMain');
+    appMain.style.display = 'none';
+    loginScreen.style.display = 'flex';
+    showToast('Logged out successfully');
+  }
+
+  // ============================================
+  // AUTH TABS
+  // ============================================
+  function switchAuthTab(tab) {
+    document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active', 'bg-white', 'shadow-sm', 'text-[#111827]'));
+    document.querySelectorAll('.auth-tab').forEach(t => { t.style.background = 'transparent'; t.style.color = '#6B7280'; t.style.boxShadow = 'none'; });
+    document.getElementById('loginForm').style.display = tab === 'login' ? 'block' : 'none';
+    document.getElementById('registerForm').style.display = tab === 'register' ? 'block' : 'none';
+    const activeTab = document.querySelector(`.auth-tab[data-tab="${tab}"]`);
+    activeTab.style.background = 'white';
+    activeTab.style.color = '#111827';
+    activeTab.style.boxShadow = '0 1px 3px rgba(0,0,0,0.06)';
+  }
+
+  // ============================================
+  // NAVIGATION
+  // ============================================
+  // Define role-based page access
+const rolePages = {
+  'startup-owner': ['dashboard', 'my-ideas', 'repositories', 'repository-details', 'analysis', 'ai-refinement', 'revival-report', 'contributors', 'outreach', 'messages', 'settings', 'profile'],
+  'freelancer': ['freelancer-dashboard', 'freelancer-skills', 'freelancer-github', 'freelancer-recommendations', 'freelancer-invitations', 'freelancer-projects', 'freelancer-profile'],
+  'admin': ['admin-dashboard', 'admin-users', 'admin-ideas', 'admin-repositories', 'admin-analytics', 'admin-reports', 'admin-activity'],
+};
+
+function navigateTo(page) {
+    // Check if current role is allowed to access this page
+    const allowed = rolePages[currentRole] || [];
+    if (!allowed.includes(page)) {
+      showToast('Access denied: This page is not available for your role.');
+      return;
+    }
+    
+    currentPage = page;
+    // Update sidebar
+    const navGroups = ['startupOwnerNav', 'freelancerNav', 'adminNav'];
+    navGroups.forEach(groupId => {
+      const group = document.getElementById(groupId);
+      if (group) {
+        group.querySelectorAll('.sidebar-item').forEach(item => {
+          item.classList.toggle('active', item.dataset.page === page);
+        });
+      }
+    });
+    // Hide all pages
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    // Show target page
+    const target = document.getElementById(`page-${page}`);
+    if (target) {
+      target.classList.add('active');
+    }
+    // Update title
+    const titles = {
+      'repository-details': 'Repository Details',
+      'revival-report': 'Revival Report',
+      'dashboard': 'Dashboard',
+      'my-ideas': 'My Ideas',
+      'repositories': 'Repositories',
+      'analysis': 'Analysis',
+      'contributors': 'Contributors',
+      'outreach': 'Outreach',
+      'messages': 'Messages',
+      'settings': 'Settings',
+      'profile': 'Profile',
+      'ai-refinement': 'AI Refinement',
+      'freelancer-dashboard': 'Dashboard',
+      'freelancer-skills': 'My Skills',
+      'freelancer-github': 'My GitHub',
+      'freelancer-recommendations': 'Recommendations',
+      'freelancer-invitations': 'Invitations',
+      'freelancer-projects': 'Projects',
+      'freelancer-profile': 'Profile',
+      'admin-dashboard': 'Admin Dashboard',
+      'admin-users': 'Users',
+      'admin-ideas': 'Ideas',
+      'admin-repositories': 'Repositories',
+      'admin-analytics': 'Analytics',
+      'admin-reports': 'Reports',
+      'admin-activity': 'Activity'
+    };
+    document.getElementById('pageTitle').textContent = titles[page] || 'Dashboard';
+    
+    // If navigating away from analysis, stop it
+    if (page !== 'analysis' && analysisRunning) {
+      analysisRunning = false;
+    }
+  }
+
+  // ============================================
+  // ROLE SWITCHING
+  // ============================================
+  function switchRole(role) {
+    currentRole = role;
+    // Update role buttons
+    document.querySelectorAll('.role-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.role === role));
+    // Hide all pages first to prevent cross-role access
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    // Show/hide nav groups
+    document.getElementById('startupOwnerNav').style.display = role === 'startup-owner' ? 'block' : 'none';
+    document.getElementById('freelancerNav').style.display = role === 'freelancer' ? 'block' : 'none';
+    document.getElementById('adminNav').style.display = role === 'admin' ? 'block' : 'none';
+    
+    // Update badge
+    const badge = document.getElementById('roleBadge');
+    const labels = { 'startup-owner': 'Startup Owner', 'freelancer': 'Freelancer', 'admin': 'Admin' };
+    badge.textContent = labels[role];
+    
+    // Navigate to appropriate dashboard
+    const pages = { 'startup-owner': 'dashboard', 'freelancer': 'freelancer-dashboard', 'admin': 'admin-dashboard' };
+    navigateTo(pages[role]);
+    showToast(`Switched to ${labels[role]}`);
+  }
+
+  // ============================================
+  // TOAST
+  // ============================================
+  let toastTimeout;
+  // Show outreach message preview inline with edit/send capability
+function showOutreach(contributorName, projectName, btn) {
+  const card = btn.closest('.card');
+  if (!card) return;
+  
+  // Check if preview is already shown
+  const existing = card.querySelector('.outreach-preview');
+  if (existing) {
+    existing.remove();
+    btn.textContent = 'Generate Outreach';
+    return;
+  }
+  
+  btn.textContent = 'Hide Message';
+  
+  const preview = document.createElement('div');
+  preview.className = 'outreach-preview mt-4 p-4 rounded-xl bg-[#FAFAFC] border border-[#ECE8FF] animate-fadeIn';
+  preview.innerHTML = `
+    <div class="flex items-center gap-2 mb-3">
+      <i data-lucide="message-square" class="w-4 h-4 text-[#8B5CF6]"></i>
+      <span class="text-sm font-semibold text-[#111827]">Outreach Message</span>
+      <span class="text-xs text-[#6B7280]">To: <span class="font-medium">${contributorName}</span></span>
+    </div>
+    <textarea class="input-field text-sm min-h-[120px] resize-none" oninput="updateOutreachSend(this)">Hi ${contributorName}! I came across your impressive work and think you would be a perfect fit for our project. Your expertise in the required technologies aligns perfectly with what we need. Would you be interested in collaborating? Let me know!</textarea>
+    <div class="flex items-center justify-between mt-3">
+      <div class="flex gap-2">
+        <button onclick="copyOutreach(this)" class="btn-outline text-xs flex items-center gap-1"><i data-lucide="copy" class="w-3 h-3"></i> Copy</button>
+        <button onclick="previewOutreach(this)" class="btn-outline text-xs flex items-center gap-1"><i data-lucide="eye" class="w-3 h-3"></i> Preview</button>
+      </div>
+      <button onclick="sendOutreach(this, '${contributorName}')" class="btn-primary text-xs flex items-center gap-1 disabled opacity-50" disabled>
+        <i data-lucide="send" class="w-3 h-3"></i> Send
+      </button>
+    </div>
+  `;
+  
+  card.appendChild(preview);
+  setTimeout(() => { try { if (typeof lucide !== "undefined") lucide.createIcons(); } catch(e) {} }, 50);
+}
+
+function updateOutreachSend(textarea) {
+  const preview = textarea.closest('.outreach-preview');
+  if (!preview) return;
+  const btn = preview.querySelector('button[onclick*="sendOutreach"]');
+  if (!btn) return;
+  if (textarea.value.trim().length > 10) {
+    btn.disabled = false;
+    btn.classList.remove('disabled', 'opacity-50');
+  } else {
+    btn.disabled = true;
+    btn.classList.add('disabled', 'opacity-50');
+  }
+}
+
+function copyOutreach(btn) {
+  const textarea = btn.closest('.outreach-preview').querySelector('textarea');
+  navigator.clipboard.writeText(textarea.value).then(() => {
+    showToast('Message copied to clipboard!');
+  }).catch(() => {
+    showToast('Failed to copy message');
+  });
+}
+
+function previewOutreach(btn) {
+  const textarea = btn.closest('.outreach-preview').querySelector('textarea');
+  showToast('Preview: ' + textarea.value.substring(0, 60) + '...');
+  // Could show a modal here
+}
+
+function sendOutreach(btn, recipient) {
+  btn.disabled = true;
+  btn.innerHTML = '<i data-lucide="check" class="w-3 h-3"></i> Sending...';
+  btn.classList.add('opacity-50');
+  
+  setTimeout(() => {
+    btn.innerHTML = '<i data-lucide="check-circle" class="w-3 h-3"></i> Sent!';
+    btn.classList.remove('btn-primary');
+    btn.classList.add('btn-success');
+    showToast('Message sent to ' + recipient + ' successfully!');
+    
+    // Disable editing
+    const textarea = btn.closest('.outreach-preview').querySelector('textarea');
+    textarea.disabled = true;
+    textarea.classList.add('opacity-60');
+    
+    setTimeout(() => { try { if (typeof lucide !== "undefined") lucide.createIcons(); } catch(e) {} }, 50);
+  }, 1500);
+}
+// Outreach page specific functions
+function previewOutreachMessage(btn) {
+  const msgCard = btn.closest('.card');
+  const msgContent = msgCard.querySelector('.p-4.rounded-xl.bg-\[#FAFAFC\]');
+  if (msgContent) {
+    msgContent.classList.toggle('ring-2', 'ring-[#8B5CF6]');
+    msgContent.classList.toggle('ring-1');
+    showToast('Message preview expanded');
+  }
+}
+
+function copyOutreachMessage(btn) {
+  const msgCard = btn.closest('.card');
+  const msgContent = msgCard.querySelector('.p-4.rounded-xl');
+  if (msgContent) {
+    const text = msgContent.textContent.trim();
+    navigator.clipboard.writeText(text).then(() => {
+      showToast('Message copied to clipboard!');
+    }).catch(() => {
+      const textarea = document.createElement('textarea');
+      textarea.value = text;
+      document.body.appendChild(textarea);
+      textarea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textarea);
+      showToast('Message copied!');
+    });
+  }
+}
+
+function sendOutreachMessage(btn, recipient) {
+  btn.disabled = true;
+  btn.innerHTML = '<i data-lucide="loader-2" class="w-3 h-3 animate-spin"></i> Sending...';
+  
+  setTimeout(() => {
+    btn.innerHTML = '<i data-lucide="check-circle" class="w-3 h-3"></i> Sent!';
+    btn.classList.remove('btn-primary');
+    btn.classList.add('btn-success');
+    
+    const card = btn.closest('.card');
+    const badge = card.querySelector('.badge');
+    if (badge) {
+      badge.textContent = 'Sent';
+      badge.className = 'badge badge-green text-xs';
+    }
+    
+    showToast('Message sent to ' + recipient + ' successfully!');
+    try { if (typeof lucide !== "undefined") lucide.createIcons(); } catch(e) {};
+  }, 2000);
+}
+function showToast(message) {
+    const toast = document.getElementById('toast');
+    document.getElementById('toastMessage').textContent = message;
+    toast.classList.add('show');
+    clearTimeout(toastTimeout);
+    toastTimeout = setTimeout(() => toast.classList.remove('show'), 3000);
+  }
+
+  // ============================================
+  // IDEA SUBMISSION
+  // ============================================
+  function showSubmitIdea() {
+    const card = document.getElementById('submitIdeaCard');
+    card.style.display = card.style.display === 'none' ? 'block' : 'none';
+    if (card.style.display === 'block') {
+      card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }
+
+  function suggestPrompt(text) {
+    document.getElementById('ideaText').value = text;
+    updateCharCount();
+  }
+
+  function updateCharCount() {
+    const text = document.getElementById('ideaText').value;
+    document.getElementById('charCount').textContent = `${text.length} / 1000`;
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const textarea = document.getElementById('ideaText');
+    if (textarea) textarea.addEventListener('input', updateCharCount);
+  });
+
+  function toggleVoice() {
+    isRecording = !isRecording;
+    const btn = document.getElementById('voiceBtn');
+    btn.classList.toggle('recording', isRecording);
+    showToast(isRecording ? 'Recording... Speak your idea' : 'Recording stopped');
+  }
+
+  function submitIdea() {
+    showToast('AI is analyzing your idea...');
+    // Simulate loading then show refinement page
+    setTimeout(() => {
+      navigateTo('ai-refinement');
+      startRefinement();
+    }, 800);
+  }
+
+  // ============================================
+  // AI REFINEMENT
+  // ============================================
+  function startRefinement() {
+    const processing = document.getElementById('refinementProcessing');
+    const result = document.getElementById('refinementResult');
+    const progress = document.getElementById('refinementProgress');
+    processing.style.display = 'flex';
+    result.style.display = 'none';
+    progress.style.width = '0%';
+    let p = 0;
+    const interval = setInterval(() => {
+      p += Math.random() * 8;
+      if (p >= 100) {
+        p = 100;
+        clearInterval(interval);
+        setTimeout(() => {
+          processing.style.display = 'none';
+          result.style.display = 'block';
+          showToast('Idea refined successfully!');
+        }, 500);
+      }
+      progress.style.width = p + '%';
+    }, 200);
+  }
+
+  // ============================================
+  // ANALYSIS PIPELINE
+  // ============================================
+  const agentNames = [
+    'Repository Reader',
+    'Documentation Agent',
+    'Code Health Agent',
+    'Trend Prediction Agent',
+    'AI Capability Agent',
+    'Skill Gap Agent'
+  ];
+  const agentLogs = [
+    'Cloning repository structure...',
+    'Analyzing documentation quality...',
+    'Assessing code health metrics...',
+    'Predicting technology trends...',
+    'Estimating AI contribution...',
+    'Identifying skill gaps...'
+  ];
+
+  function startAnalysis() {
+    if (analysisRunning) return;
+    analysisRunning = true;
+    document.getElementById('startAnalysisBtn').disabled = true;
+    document.getElementById('startAnalysisBtn').innerHTML = '<i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i> Running...';
+    
+    let currentAgent = 0;
+    const totalAgents = 6;
+    const logs = document.getElementById('liveLogs');
+    logs.innerHTML = '<div class="text-[#6B7280]">[System] Analysis pipeline initialized. Starting agents...</div>';
+    
+    function runNextAgent() {
+      if (currentAgent >= totalAgents || !analysisRunning) {
+        // Complete
+        document.getElementById('startAnalysisBtn').innerHTML = '<i data-lucide="check" class="w-4 h-4"></i> Analysis Complete';
+        document.getElementById('startAnalysisBtn').disabled = false;
+        document.getElementById('startAnalysisBtn').classList.add('bg-green-500', 'hover:bg-green-600');
+        document.getElementById('startAnalysisBtn').classList.remove('bg-[#8B5CF6]', 'hover:bg-[#7C3AED]');
+        document.getElementById('overallStatus').textContent = 'Analysis Complete!';
+        logs.innerHTML += '<div class="text-[#22C55E]">[System] ✅ All agents completed successfully!</div>';
+        analysisRunning = false;
+        showToast('Analysis complete!') 
+          document.getElementById('startAnalysisBtn').innerHTML = "<i data-lucide='file-text' class='w-4 h-4'></i> View Revival Report";
+          document.getElementById('startAnalysisBtn').onclick = function() { navigateTo('revival-report'); };
+          if (typeof lucide !== 'undefined') { setTimeout(() => { try { lucide.createIcons(); } catch(e) {} }, 50); };
+        return;
+      }
+      
+      // Set current agent as running
+      const agents = document.querySelectorAll('.agent-node');
+      agents.forEach((el, i) => {
+        if (i === currentAgent) {
+          el.className = 'agent-node running';
+          el.querySelector('.agent-status').textContent = 'Running...';
+          el.querySelector('.agent-status').style.color = '#8B5CF6';
+          el.querySelector('.agent-loader').innerHTML = '<i data-lucide="loader-2" class="w-4 h-4 animate-spin text-[#8B5CF6]"></i>';
+        } else if (i < currentAgent) {
+          el.className = 'agent-node completed';
+          el.querySelector('.agent-status').textContent = '✓ Complete';
+          el.querySelector('.agent-status').style.color = '#22C55E';
+          el.querySelector('.agent-loader').innerHTML = '<i data-lucide="check-circle" class="w-4 h-4 text-[#22C55E]"></i>';
+        }
+      });
+      
+      // Add log
+      logs.innerHTML += `<div class="text-[#8B5CF6]">[Agent] ${agentNames[currentAgent]}: ${agentLogs[currentAgent]}</div>`;
+      logs.scrollTop = logs.scrollHeight;
+      
+      // Update progress
+      const progress = Math.round(((currentAgent + 0.5) / totalAgents) * 100);
+      document.getElementById('analysisProgress').textContent = progress + '%';
+      document.getElementById('overallProgress').textContent = progress + '%';
+      
+      // Update circular progress
+      const circle = document.getElementById('progressCircle');
+      const circumference = 351.858;
+      circle.style.strokeDashoffset = circumference - (progress / 100) * circumference;
+      
+      // Simulate agent work time
+      const workTime = 1200 + Math.random() * 1800;
+      
+      setTimeout(() => {
+        // Mark current as complete
+        const currentEl = agents[currentAgent];
+        currentEl.className = 'agent-node completed';
+        currentEl.querySelector('.agent-status').textContent = '✓ Complete';
+        currentEl.querySelector('.agent-status').style.color = '#22C55E';
+        currentEl.querySelector('.agent-loader').innerHTML = '<i data-lucide="check-circle" class="w-4 h-4 text-[#22C55E]"></i>';
+        
+        logs.innerHTML += `<div class="text-[#22C55E]">[Agent] ${agentNames[currentAgent]} completed successfully</div>`;
+        logs.scrollTop = logs.scrollHeight;
+        
+        currentAgent++;
+        
+        const newProgress = Math.round((currentAgent / totalAgents) * 100);
+        document.getElementById('analysisProgress').textContent = newProgress + '%';
+        document.getElementById('overallProgress').textContent = newProgress + '%';
+        document.getElementById('overallStatus').textContent = `Processing agent ${currentAgent}/${totalAgents}`;
+        
+        const newOffset = circumference - (newProgress / 100) * circumference;
+        circle.style.strokeDashoffset = newOffset;
+        
+        // Update remaining time estimate
+        const remaining = Math.round(((totalAgents - currentAgent) / totalAgents) * 45);
+        document.getElementById('analysisTime').textContent = `~${remaining}s remaining`;
+        
+        setTimeout(runNextAgent, 300);
+      }, workTime);
+    }
+    
+    runNextAgent();
+    
+    // Also refresh Lucide icons after DOM changes
+    if (typeof lucide !== 'undefined') {
+      setTimeout(() => { try { lucide.createIcons(); } catch(e) {} }, 100);
+    }
+  }
+
+  // ============================================
+
+  // ============================================\n  // REPO TAB SWITCHING
+  // ============================================
+  function switchRepoTab(tab, btn) {
+    document.querySelectorAll("[id^='repo-']").forEach(el => el.classList.remove('active'));
+    document.getElementById("repo-" + tab).classList.add('active');
+    document.querySelectorAll("[onclick*='switchRepoTab']").forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    if (typeof lucide !== undefined) { setTimeout(() => { try { lucide.createIcons(); } catch(e) {} }, 50); }
+  }
+
+  // REPO SEARCH
+  // ============================================
+  function searchRepos(query) {
+    const results = document.getElementById('repoResults');
+    const cards = results.querySelectorAll('.card');
+    cards.forEach(card => {
+      const name = card.querySelector('h3')?.textContent?.toLowerCase() || '';
+      const desc = card.querySelector('p')?.textContent?.toLowerCase() || '';
+      const match = name.includes(query.toLowerCase()) || desc.includes(query.toLowerCase());
+      card.style.display = query ? (match ? 'block' : 'none') : 'block';
+    });
+  }
+
+  // ============================================
+  // INIT: Setup Lucide Icons
+  // ============================================
+  document.addEventListener('DOMContentLoaded', function() {
+    // Load Lucide icons
+    if (typeof lucide !== 'undefined') {
+      lucide.createIcons();
+    }
+    // Set default auth tab
+    switchAuthTab('login');
+    
+    // Update char count on textarea
+    const textarea = document.getElementById('ideaText');
+    if (textarea) {
+      textarea.addEventListener('input', updateCharCount);
+    }
+    
+    // Auto-animate progress bars on load
+    document.querySelectorAll('.progress-fill').forEach(bar => {
+      const width = bar.style.width;
+      bar.style.width = '0%';
+      setTimeout(() => { bar.style.width = width; }, 200);
+    });
+  });
+
+  // Also re-create icons after navigation (for dynamic content)
+  const origNavigateTo = navigateTo;
+  navigateTo = function(page) {
+    origNavigateTo(page);
+    if (typeof lucide !== 'undefined') {
+      setTimeout(() => { try { lucide.createIcons(); } catch(e) {} }, 50);
+    }
+  };
+
+  // Also after login
+  const origLogin = handleLogin;
+  handleLogin = function() {
+    origLogin();
+    if (typeof lucide !== 'undefined') {
+      setTimeout(() => { try { lucide.createIcons(); } catch(e) {} }, 100);
+    }
+  };
+</script>
+
+</body>
+</html>
