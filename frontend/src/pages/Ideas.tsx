@@ -1,7 +1,7 @@
 import { useState, useRef, useCallback } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Lightbulb, Plus, Sparkles, CheckCircle, Trash2, Edit3, Mic, MicOff, RefreshCw } from 'lucide-react'
+import { Lightbulb, Plus, Sparkles, CheckCircle, Trash2, Edit3, Mic, MicOff, RefreshCw, Loader } from 'lucide-react'
 import { toast } from 'sonner'
 import api from '@/lib/api'
 import type { IdeaRead } from '@/lib/types'
@@ -32,13 +32,24 @@ export default function Ideas() {
     onError: (err: any) => toast.error(err.response?.data?.detail || 'Failed to create idea'),
   })
 
+  const [refiningId, setRefiningId] = useState<number | null>(null)
+
   const refineMutation = useMutation({
-    mutationFn: (id: number) => api.post(`/ideas/${id}/refine`),
+    mutationFn: async (id: number) => {
+      setRefiningId(id)
+      // The mock adapter simulates a ~2.5s delay
+      const res = await api.post(`/ideas/${id}/refine`)
+      return res.data
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['ideas'] })
+      setRefiningId(null)
       toast.success('Idea refined!')
     },
-    onError: (err: any) => toast.error(err.response?.data?.detail || 'Failed to refine idea'),
+    onError: (err: any) => {
+      setRefiningId(null)
+      toast.error(err.response?.data?.detail || 'Failed to refine idea')
+    },
   })
 
   const approveMutation = useMutation({
@@ -224,6 +235,41 @@ export default function Ideas() {
         )}
       </AnimatePresence>
 
+      {/* Refinement Progress */}
+      <AnimatePresence>
+        {refiningId && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            className="overflow-hidden mb-4"
+          >
+            <div className="card" style={{ borderColor: 'var(--primary)' }}>
+              <div className="flex items-center gap-4">
+                <div className="relative">
+                  <div className="w-12 h-12 rounded-2xl flex items-center justify-center" style={{ background: 'var(--sidebar)' }}>
+                    <Sparkles size={24} style={{ color: 'var(--primary)' }} className="animate-spin-slow-reverse" />
+                  </div>
+                </div>
+                <div className="flex-1">
+                  <p className="text-sm font-semibold">AI is refining your idea...</p>
+                  <p className="text-xs mt-0.5" style={{ color: 'var(--text-secondary)' }}>Improving wording, technical clarity, and business context</p>
+                  <div className="mt-2 progress-bar max-w-xs">
+                    <motion.div
+                      className="progress-fill"
+                      initial={{ width: '0%' }}
+                      animate={{ width: '100%' }}
+                      transition={{ duration: 2.5, ease: 'easeInOut' }}
+                    />
+                  </div>
+                </div>
+                <span className="text-xs font-mono animate-pulse" style={{ color: 'var(--primary)' }}>~2s</span>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Ideas List */}
       {isLoading ? (
         <div className="space-y-4">
@@ -316,11 +362,15 @@ export default function Ideas() {
                       {idea.status === 'DRAFT' && (
                         <button
                           onClick={() => refineMutation.mutate(idea.id)}
-                          disabled={refineMutation.isPending}
+                          disabled={refiningId === idea.id}
                           className="btn-ghost p-2"
                           title="Refine with AI"
                         >
-                          <Sparkles size={16} style={{ color: 'var(--primary)' }} />
+                          {refiningId === idea.id ? (
+                            <span className="w-4 h-4 border-2 border-[#8B5CF6]/30 border-t-[#8B5CF6] rounded-full animate-spin" />
+                          ) : (
+                            <Sparkles size={16} style={{ color: 'var(--primary)' }} />
+                          )}
                         </button>
                       )}
                       {idea.status === 'REFINED' && (

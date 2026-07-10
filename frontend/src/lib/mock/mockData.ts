@@ -8,6 +8,15 @@ import type {
 } from '@/lib/types'
 
 // ──────────────────────────────────────────────
+// MOCK REFINEMENT (concise, 3-line output)
+// ──────────────────────────────────────────────
+
+export const MOCK_REFINED_PROMPTS: Record<string, string> = {
+  default:
+    'An AI-powered code review assistant that integrates with GitHub PRs to automatically detect bugs, security vulnerabilities, and style issues. Uses advanced ML models for real-time analysis and provides actionable fix suggestions with code examples. Designed for development teams to accelerate code review cycles and improve code quality.',
+}
+
+// ──────────────────────────────────────────────
 // MOCK REPOSITORIES
 // ──────────────────────────────────────────────
 
