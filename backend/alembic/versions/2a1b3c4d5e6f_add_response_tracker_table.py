@@ -25,7 +25,7 @@ def upgrade() -> None:
         DO $$
         BEGIN
             IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'responsestatus') THEN
-                CREATE TYPE responsestatus AS ENUM ('pending', 'accepted', 'declined');
+                CREATE TYPE responsestatus AS ENUM ('PENDING', 'ACCEPTED', 'DECLINED');
             END IF;
         END
         $$;
@@ -40,11 +40,11 @@ def upgrade() -> None:
             analysis_id INTEGER NOT NULL REFERENCES repository_analysis(id) ON DELETE CASCADE,
             contributor_match_id INTEGER REFERENCES contributor_matches(id) ON DELETE SET NULL,
             outreach_message_id INTEGER REFERENCES outreach_messages(id) ON DELETE SET NULL,
-            status responsestatus NOT NULL DEFAULT 'pending',
+            status responsestatus NOT NULL DEFAULT 'PENDING',
             responded_at TIMESTAMP WITHOUT TIME ZONE,
             notes TEXT,
-            created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT NOW(),
-            updated_at TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT NOW()
+            created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
+            updated_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW()
         );
         """
     )

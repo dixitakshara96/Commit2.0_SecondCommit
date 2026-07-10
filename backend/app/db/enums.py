@@ -2,39 +2,39 @@ from enum import Enum
 
 
 class UserRole(str, Enum):
-    STARTUP = "startup"
-    FREELANCER = "freelancer"
-    ADMIN = "admin"
+    STARTUP = "STARTUP"
+    FREELANCER = "FREELANCER"
+    ADMIN = "ADMIN"
 
 
 class IdeaStatus(str, Enum):
-    DRAFT = "draft"
-    REFINED = "refined"
-    APPROVED = "approved"
-    ANALYZED = "analyzed"
-    COMPLETED = "completed"
+    DRAFT = "DRAFT"
+    REFINED = "REFINED"
+    APPROVED = "APPROVED"
+    ANALYZED = "ANALYZED"
+    COMPLETED = "COMPLETED"
 
 
 class OutreachType(str, Enum):
-    OWNER = "owner"
-    CONTRIBUTOR = "contributor"
+    OWNER = "OWNER"
+    CONTRIBUTOR = "CONTRIBUTOR"
 
 class FindingType(str, Enum):
-    ISSUE = "issue"
-    FEATURE = "feature"
-    AI_TASK = "ai_task"
-    HUMAN_TASK = "human_task"
-    RISK = "risk"
+    ISSUE = "ISSUE"
+    FEATURE = "FEATURE"
+    AI_TASK = "AI_TASK"
+    HUMAN_TASK = "HUMAN_TASK"
+    RISK = "RISK"
 
 
 class Severity(str, Enum):
-    LOW = "low"
-    MEDIUM = "medium"
-    HIGH = "high"
-    CRITICAL = "critical"
+    LOW = "LOW"
+    MEDIUM = "MEDIUM"
+    HIGH = "HIGH"
+    CRITICAL = "CRITICAL"
 
 
 class ResponseStatus(str, Enum):
-    PENDING = "pending"
-    ACCEPTED = "accepted"
-    DECLINED = "declined"
+    PENDING = "PENDING"
+    ACCEPTED = "ACCEPTED"
+    DECLINED = "DECLINED"

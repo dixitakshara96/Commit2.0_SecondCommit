@@ -26,9 +26,7 @@ router = APIRouter(
     response_model=UserRead,
     status_code=status.HTTP_201_CREATED,
 )
-@limiter.limit("5/hour")
 def register(
-    request: Request,
     payload: UserCreate,
     db: DBSession,
 ):
@@ -49,10 +47,8 @@ def register(
     "/login",
     response_model=LoginResponse,
 )
-@limiter.limit("10/minute")
 def login(
     payload: LoginRequest,
-    request: Request,
     db: DBSession,
 ):
 

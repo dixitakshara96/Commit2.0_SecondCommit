@@ -24,3 +24,5 @@ pwdlib[argon2]>=0.2
 pydantic>=2.7
 
 pydantic-settings>=2.3
+slowapi>=0.1.9
+httpx>=0.28.0

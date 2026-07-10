@@ -32,7 +32,6 @@ class SnapshotAgent:
         contributors_task = github_service.get_contributors(owner=owner, repo=repo_name, per_page=30)
         commits_task = github_service.get_commits(owner=owner, repo=repo_name, per_page=30)
         issues_task = github_service.get_issues(owner=owner, repo=repo_name, state="open", per_page=30)
-        issues_task = github_service.get_issues(owner=owner, repo=repo_name, state="open", per_page=30)
         pulls_task = github_service.get_pull_requests(owner=owner, repo=repo_name, state="open", per_page=30)
         releases_task = github_service.get_releases(owner=owner, repo=repo_name, per_page=10)
 

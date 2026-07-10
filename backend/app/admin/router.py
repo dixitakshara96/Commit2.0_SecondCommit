@@ -9,6 +9,7 @@ from app.crud.user import user_crud
 from app.db.enums import IdeaStatus, ResponseStatus, UserRole
 from app.db.models.idea import Idea
 from app.db.models.user import User
+from app.db.models.repository_analysis import RepositoryAnalysis
 from app.schemas.dashboard import (
     AdminDashboardResponse,
     AdminEcosystemHealth,
@@ -228,17 +229,23 @@ def platform_analytics(
     db: DBSession,
     current_user: CurrentUser,
 ):
-    """Deep platform analytics — aggregates across all entities."""
+    """Deep platform analytics — aggregates across all entities.
+    All queries use COALESCE/zero-safe patterns to handle empty tables.
+    """
     _require_admin(current_user)
 
     from app.db.models.contributor_match import ContributorMatch
     from app.db.models.outreach_message import OutreachMessage
-    from app.db.models.repository_analysis import RepositoryAnalysis
     from app.db.models.response_tracker import ResponseTracker
 
     aggregates = dashboard_crud.admin_system_aggregates(db=db)
 
-    total_ideas = db.execute(select(func.count(Idea.id))).scalar() or 0
+    total_ideas = db.execute(
+        select(func.count(Idea.id))
+    ).scalar() or 0
+    total_analyses = db.execute(
+        select(func.count(RepositoryAnalysis.id))
+    ).scalar() or 0
     total_contributor_matches = db.execute(
         select(func.count(ContributorMatch.id))
     ).scalar() or 0
@@ -257,7 +264,7 @@ def platform_analytics(
     return {
         "users": aggregates,
         "ideas": {"total": total_ideas},
-        "analyses": {"total": aggregates["total_analyses_executed"]},
+        "analyses": {"total": total_analyses},
         "contributor_matches": {"total": total_contributor_matches},
         "outreach": {"total_sent": total_outreach_sent},
         "responses": {

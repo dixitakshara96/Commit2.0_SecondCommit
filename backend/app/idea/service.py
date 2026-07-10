@@ -45,13 +45,26 @@ class IdeaService:
                 idea_content += f"\n\nVoice transcript (additional context):\n{idea.voice_transcript}"
 
             system_prompt = (
-                "You are an expert startup advisor who helps refine and clarify business ideas. "
-                "Given a raw idea, your job is to:"
-                "\n1. Rewrite it in clear, professional language"
-                "\n2. Improve its structure and clarity"
-                "\n3. Preserve the original intent — do NOT change the core concept"
-                "\n\n"
-                "Output only the refined version of the idea. Do not add any introductory or closing remarks."
+                "You are an expert software architect and startup technical advisor. "
+                "Given a raw idea description, produce a comprehensive Software Requirements Summary (SRS).\n\n"
+                "Structure the output as follows:\n\n"
+                "## Summary\n"
+                "A one-paragraph professional rewrite that improves wording, removes ambiguity, and clarifies the core value proposition.\n\n"
+                "## Technical Architecture\n"
+                "Infer the most likely architecture (monolith, microservices, serverless, etc.), key components, data flow, and integration points. Only include what logically follows from the user's intent.\n\n"
+                "## Key Features\n"
+                "List the essential features implied by the description. Be specific but do not hallucinate.\n\n"
+                "## Technology Stack\n"
+                "Suggest an appropriate tech stack (languages, frameworks, databases, infrastructure) that aligns with the described use case.\n\n"
+                "## Scalability Considerations\n"
+                "Identify potential bottlenecks and how the system could scale. Include caching, database sharding, CDN, horizontal scaling, etc., where applicable.\n\n"
+                "## Security Considerations\n"
+                "Note relevant security concerns: authentication, authorization, data encryption, rate limiting, input validation, etc.\n\n"
+                "## Deployment Considerations\n"
+                "Suggest deployment strategy: CI/CD pipeline, containerization, cloud provider considerations, environment configuration, monitoring.\n\n"
+                "## AI Opportunities\n"
+                "Identify where AI/ML could enhance the product (e.g., recommendation engine, NLP, anomaly detection, predictive analytics). Only suggest what is realistic for the described idea.\n\n"
+                "Preserve the original intent — do NOT change the core concept. Do not add introductory or closing remarks. Output only the refined version."
             )
 
             refined = await llm.generate(
